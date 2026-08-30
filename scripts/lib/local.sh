@@ -41,7 +41,11 @@ detect_local_paths() {
   done
 
   if [[ -z "$steamapps" && -n "${PZ_GAME_DIR:-}" ]]; then
-    steamapps="$(cd -- "$PZ_GAME_DIR/../.." 2>/dev/null && pwd || true)"
+    if steamapps="$(cd -- "$PZ_GAME_DIR/../.." 2>/dev/null && pwd)"; then
+      :
+    else
+      steamapps=""
+    fi
   fi
 
   [[ -n "$steamapps" ]] || return 1
