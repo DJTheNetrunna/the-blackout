@@ -1,0 +1,52 @@
+# Knox Nightmare — CO-OP
+
+CO-OP targets Project Zomboid's normal **Host** workflow / Steam-hosted games.
+
+## Install
+
+```bash
+./scripts/install-local.sh coop
+```
+
+The installer detects the real Steam library, backs up local saves, generates the CO-OP sandbox from the same shared base as SOLO/SERVER, and installs:
+
+```text
+~/Zomboid/Sandbox Presets/Knox Nightmare - COOP.cfg
+~/Zomboid/Server/KnoxNightmare-Coop.ini
+~/Zomboid/Server/KnoxNightmare-Coop_SandboxVars.lua
+~/Zomboid/KnoxNightmare/coop/{WORKSHOP_IDS,MOD_IDS,WORKSHOP_URLS}.txt
+```
+
+Existing host/server settings with other names are untouched. If a previous KnoxNightmare-Coop file exists and differs, it is backed up before replacement.
+
+## Normal Host UI
+
+1. Subscribe to missing Workshop items in Steam.
+2. Launch Project Zomboid.
+3. Choose **Host**.
+4. Open **Manage Settings** and select the Knox Nightmare CO-OP server profile if shown; otherwise create/select `KnoxNightmare-Coop` and verify its generated files are under `~/Zomboid/Server/`.
+5. Verify the Mods/Workshop list matches the generated CO-OP files.
+6. Start a **new** hosted world rather than attaching Knox Nightmare to an old campaign.
+7. Invite players through Steam after the host reaches the world.
+
+## CO-OP default mods
+
+- Dynamic Evolution Z
+- LED Lantern
+- Surviving the Storm
+- Special Zombies Framework
+- Special Zombies #01 — Screamer
+- Hark's Horde Night Revamped
+
+Reactive Sound Events is held out of default B42.20 CO-OP because current upstream/community discussion still asks for stable B42.20 MP updates. Afraid of Monsters remains a CO-OP candidate.
+
+## CO-OP tuning
+
+- 8% sprinters.
+- peak population 1.4.
+- MaxPlayers generated as 8 for the hosted profile.
+- HHNR horde size applies per player; keep event sizes conservative because four players can multiply the total active horde substantially.
+
+## Synchronization gate
+
+Before promoting a candidate, test two clients: join, separate cells, special event, sleep, save, clean host shutdown, restart/rejoin, mod update, and rollback.

@@ -9,4 +9,5 @@ steamcmd/
 Zomboid/
 workshop/
 .cache/
+.generated/
 .DS_Store

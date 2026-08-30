@@ -1,37 +1,31 @@
-# Knox Nightmare Mod List
+# Knox Nightmare Mod Profiles
 
-The machine-readable source of truth is `manifest.tsv`.
+Canonical source: `manifest.tsv`.
 
-## Default core
+## SOLO — approved default
 
-| Workshop | Mod ID | Name | Status |
-|---|---|---|---|
-| 3676814360 | DynamicEvolutionZ | DEZ - Dynamic Evolution Z | approved |
+1. `3676814360` — `DynamicEvolutionZ`
+2. `3627773043` — `LEDFlashlight`
+3. `2971021306` — `SurvivingTheStorm`
+4. `3656190498` — `ReactiveSE`
+5. `3783282009` — `SpecialZombiesB42`
+6. `3783282817` — `SpecialZombiesScreamerB42`
+7. `3713005182` — `HHNR`
+8. `2499635888` — `afraidofmonsterszombies`
 
-## Approved utility
+## CO-OP — approved default
 
-| Workshop | Mod ID | Name | Status |
-|---|---|---|---|
-| 3627773043 | LEDFlashlight | LED Lantern | approved |
+1. `3676814360` — `DynamicEvolutionZ`
+2. `3627773043` — `LEDFlashlight`
+3. `2971021306` — `SurvivingTheStorm`
+4. `3783282009` — `SpecialZombiesB42`
+5. `3783282817` — `SpecialZombiesScreamerB42`
+6. `3713005182` — `HHNR`
 
-## Candidate horror/visual layer
+## SERVER — approved default
 
-These are intentionally excluded from the default production config until live B42.20 dedicated-server testing passes:
+1. `3676814360` — `DynamicEvolutionZ`
+2. `3627773043` — `LEDFlashlight`
+3. `3713005182` — `HHNR`
 
-- `2499635888` — `afraidofmonsterszombies`
-- `2714850307` — `HordeNight01`
-- `2335368829` — `Authentic Z - Current`
-
-## Hold
-
-- `3592043816` — `TheyFearTheLight`
-
-## Sources
-
-Workshop pages follow:
-
-```text
-https://steamcommunity.com/sharedfiles/filedetails/?id=<WORKSHOP_ID>
-```
-
-No Workshop payload is redistributed by this repository.
+Use `solo-lab`, `coop-lab`, or `server-lab` generation only on disposable worlds to include target candidates.
