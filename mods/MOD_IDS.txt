@@ -1,0 +1,8 @@
+# Knox Nightmare documented Mod IDs (non-rejected)
+# status        mod_id
+approved        DynamicEvolutionZ
+approved        LEDFlashlight
+candidate       afraidofmonsterszombies
+candidate       HordeNight01
+candidate       Authentic Z - Current
+hold            TheyFearTheLight

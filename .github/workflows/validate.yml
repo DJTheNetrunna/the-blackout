@@ -1,0 +1,26 @@
+name: Validate Knox Nightmare
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install static validators
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck lua5.4
+
+      - name: Validate scripts, manifest, and sandbox syntax
+        run: ./scripts/validate-mods.sh
+
+      - name: Exercise mocked install/update/launch/backup/restore lifecycle
+        run: ./scripts/test.sh

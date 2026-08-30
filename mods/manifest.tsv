@@ -1,0 +1,10 @@
+workshop_id	mod_id	name	tier	status	build	multiplayer	dependencies	redistribution	notes
+3676814360	DynamicEvolutionZ	DEZ - Dynamic Evolution Z	core	approved	42.20	yes	none	workshop_only	Updated 2026-08-20; server-side; do not combine with Wandering, Starving, or Thump with Friends.
+3627773043	LEDFlashlight	LED Lantern	utility	approved	42.x	yes	none	workshop_only	Build 42 + Multiplayer tagged; useful for darkness gameplay.
+2499635888	afraidofmonsterszombies	Afraid of Monsters zombies [B42 UPDATED]	horror	candidate	42.x	unknown	none	workshop_only	B42 adapted; dedicated-server multiplayer behavior requires live validation.
+2714850307	HordeNight01	Horde Night	horror	candidate	42.x	yes	none	workshop_only	B42 support documented; revalidate on current 42.20 stable before production.
+2335368829	Authentic Z - Current	Authentic Z	visual	candidate	42.x	uncertain	none	workshop_only	B42 supported upstream; recent 42.20/server issue reports; assets explicitly may not be reuploaded.
+3592043816	TheyFearTheLight	They Fear the Light	horror	hold	42.x	yes	none	workshop_only	Thematic fit, but upstream posted B42.20 migration warning; disabled pending live verification.
+2590814089	2590814089	AoM ZED ANIMATIONS B42	rejected	rejected	42.x	no	none	workshop_only	Author states it does not support server-side mode and may require root animation replacement.
+2858019558	TheDarknessIsComing	The Darkness Is Coming!	rejected	rejected	41	unstable	Monkey's Library	workshop_only	Build 41-tagged/removed-incompatible listing; do not use for B42.20 production.
+3518609649	HordeNightB42Fix	Horde Night Fixed B42	rejected	rejected	42-old	broken	none	workshop_only	Removed/incompatible listing with reports of crashes on later B42; reject.
