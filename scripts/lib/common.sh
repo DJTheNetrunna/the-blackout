@@ -71,7 +71,7 @@ selected_manifest_rows() {
   esac
 
   case "$profile" in
-    *-lab|horror-lab) allow_candidate=1 ;;
+    *-lab) allow_candidate=1 ;;
   esac
 
   awk -F '\t' -v col="$col" -v allow_candidate="$allow_candidate" '
