@@ -25,7 +25,10 @@ if ! awk -F '\t' '
   $9 !~ /^[0-9]+$/ { print "invalid load order on line " NR > "/dev/stderr"; bad=1 }
   seenW[$1]++ { print "duplicate workshop id " $1 > "/dev/stderr"; bad=1 }
   seenM[$2]++ { print "duplicate mod id " $2 > "/dev/stderr"; bad=1 }
-  { deps[NR]=$10; ids[$2]=1 }
+  {
+    ids[$2]=1
+    if (!($6=="rejected" && $7=="rejected" && $8=="rejected")) deps[NR]=$10
+  }
   END {
     for (line in deps) {
       if (deps[line] == "none") continue
