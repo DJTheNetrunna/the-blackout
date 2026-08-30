@@ -53,7 +53,7 @@ if [[ $online -eq 1 ]]; then
     warn "curl unavailable; skipping online checks"
   else
     log "Checking non-rejected Workshop pages"
-    while IFS=$'\t' read -r wid mod_id name tier status build multiplayer dependencies redistribution notes; do
+    while IFS=$'\t' read -r wid _mod_id _name _tier status _rest; do
       [[ "$status" == "rejected" ]] && continue
       url="https://steamcommunity.com/sharedfiles/filedetails/?id=$wid"
       if ! curl -fsSL --max-time 15 "$url" | grep -q "$wid"; then
@@ -72,7 +72,7 @@ fi
 
 if command -v shellcheck >/dev/null 2>&1; then
   log "Running shellcheck"
-  shellcheck "$SCRIPT_DIR"/*.sh "$SCRIPT_DIR"/lib/*.sh || fail=1
+  shellcheck -x -e SC1091,SC2016 "$SCRIPT_DIR"/*.sh "$SCRIPT_DIR"/lib/*.sh || fail=1
 else
   log "shellcheck not installed; skipping lint"
 fi

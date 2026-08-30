@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
@@ -50,7 +49,10 @@ grep -Fxq 'worlddata' "$tmp/cache/Saves/Multiplayer/KnoxNightmare/map.bin"
 for profile in vanilla core recommended horror-lab; do
   rm -rf "$tmp/cache/Server"
   MOD_PROFILE="$profile" "$SCRIPT_DIR/generate-config.sh" "$profile" >/dev/null
-  ! grep -Eq '(2590814089|2858019558|3518609649)' "$tmp/cache/Server/KnoxNightmare.ini"
+  if grep -Eq '(2590814089|2858019558|3518609649)' "$tmp/cache/Server/KnoxNightmare.ini"; then
+    printf 'rejected Workshop ID leaked into profile %s\n' "$profile" >&2
+    exit 1
+  fi
 done
 
 printf '[knox-nightmare] Mock lifecycle tests passed\n'
