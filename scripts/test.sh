@@ -35,6 +35,8 @@ export PREFETCH_WORKSHOP=1
 export MOCK_STEAM_LOG="$tmp/steam.log"
 export MOCK_LAUNCH_LOG="$tmp/launch.log"
 export PZ_STEAMAPPS_DIR="$tmp/Steam/steamapps"
+export PZ_GAME_DIR="$tmp/Steam/steamapps/common/ProjectZomboid"
+export PZ_WORKSHOP_DIR="$tmp/Steam/steamapps/workshop/content/108600"
 export PZ_DATA_DIR="$tmp/localdata"
 
 # Profile generation
@@ -46,9 +48,15 @@ done
 
 grep -Fxq 'ZombieLore.SprinterPercentage=12' "$REPO_ROOT/.generated/solo/Knox Nightmare - SOLO.cfg"
 grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
-! grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/coop/MOD_IDS.txt"
+if grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/coop/MOD_IDS.txt"; then
+  printf 'ReactiveSE leaked into default CO-OP profile\n' >&2
+  exit 1
+fi
 grep -Fxq 'SurvivingTheStorm' "$REPO_ROOT/.generated/coop/MOD_IDS.txt"
-! grep -Fxq 'SurvivingTheStorm' "$REPO_ROOT/.generated/server/MOD_IDS.txt"
+if grep -Fxq 'SurvivingTheStorm' "$REPO_ROOT/.generated/server/MOD_IDS.txt"; then
+  printf 'SurvivingTheStorm leaked into default SERVER profile\n' >&2
+  exit 1
+fi
 grep -Fxq 'HHNR' "$REPO_ROOT/.generated/server/MOD_IDS.txt"
 
 # Local Steam detection
