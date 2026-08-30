@@ -1,0 +1,8 @@
+# Knox Nightmare documented Workshop IDs (non-rejected)
+# status        id          name
+approved        3676814360  DEZ - Dynamic Evolution Z
+approved        3627773043  LED Lantern
+candidate       2499635888  Afraid of Monsters zombies
+candidate       2714850307  Horde Night
+candidate       2335368829  Authentic Z
+hold            3592043816  They Fear the Light

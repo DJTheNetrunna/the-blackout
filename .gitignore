@@ -1,0 +1,12 @@
+.env
+*.log
+*.pid
+*.tar.gz
+*.sha256
+backups/
+server/
+steamcmd/
+Zomboid/
+workshop/
+.cache/
+.DS_Store
