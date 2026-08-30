@@ -32,10 +32,12 @@ export MOCK_LAUNCH_LOG="$tmp/launch.log"
 
 "$SCRIPT_DIR/install.sh" >/dev/null
 "$SCRIPT_DIR/install-mods.sh" recommended >/dev/null
+"$SCRIPT_DIR/update-mods.sh" >/dev/null
 "$SCRIPT_DIR/launch-server.sh"
 
 grep -Fxq -- '-servername KnoxNightmare -cachedir='"$tmp/cache" "$tmp/launch.log"
-grep -Fq '+app_update 380870 validate' "$tmp/steam.log"
+update_calls="$(grep -Fc '+app_update 380870 validate' "$tmp/steam.log" || true)"
+[[ "$update_calls" -ge 2 ]]
 grep -Fq '+workshop_download_item 108600 3676814360 validate' "$tmp/steam.log"
 grep -Fq '+workshop_download_item 108600 3627773043 validate' "$tmp/steam.log"
 
