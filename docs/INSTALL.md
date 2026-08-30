@@ -1,50 +1,59 @@
 # Installation
 
-## Requirements
+Knox Nightmare has three installation paths. All target Build 42.20.x and share the same sandbox source.
 
-- 64-bit Linux host
-- `bash`, `tar`, `gzip`
-- `curl` or `wget`
-- enough storage for Project Zomboid Dedicated Server, saves, backups, and Workshop content
-- outbound HTTPS access to Steam/Valve services
+## SOLO — normal Steam client
 
-The installer downloads Valve SteamCMD into the deployment root rather than assuming a distro-specific SteamCMD package.
-
-## Install
+Requirements: Linux Steam installation of Project Zomboid, Bash, tar, gzip, and sha256sum.
 
 ```bash
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 cd the-blackout
+./scripts/detect-local.sh
+./scripts/install-local.sh solo
+```
+
+The installer discovers the Steam library that actually contains App `108600`, derives its Workshop path, backs up existing local saves, installs only the named Knox Nightmare sandbox preset, and reports missing Workshop subscriptions. Subscribe to missing items through the normal Steam client.
+
+Then launch Project Zomboid → **Mods** → enable the generated SOLO Mod IDs → **Solo** → **Custom Sandbox** → load **Knox Nightmare - SOLO** → create a new world.
+
+## CO-OP — normal Host workflow
+
+```bash
+./scripts/install-local.sh coop
+```
+
+This installs the CO-OP menu preset and isolated `KnoxNightmare-Coop` host files under the detected Project Zomboid data directory. Existing saves and unrelated host profiles are preserved.
+
+Launch Project Zomboid → **Host** → **Manage Settings** → select/verify `KnoxNightmare-Coop` → create a new hosted world.
+
+## SERVER — dedicated Linux server
+
+```bash
 cp config/examples/knox-nightmare.env.example .env
 $EDITOR .env
 ./scripts/install.sh
-```
-
-`install.sh` will:
-
-1. create the local deployment directories;
-2. obtain SteamCMD if needed;
-3. install/update Project Zomboid Dedicated Server App `380870`;
-4. generate the selected server configuration;
-5. copy the sandbox config into the configured cachedir;
-6. run static validation.
-
-## First boot
-
-```bash
+./scripts/generate-config.sh server
+./scripts/validate-mods.sh
 ./scripts/launch-server.sh
 ```
 
-If an administrator password is requested, enter it interactively. Do not place it in `.env`, shell history, or Git.
+`install.sh` obtains SteamCMD if necessary and installs Project Zomboid Dedicated Server App `380870`. Workshop/game App ID is `108600`.
 
-## Firewall
+## Steam library detection
 
-Build 42 dedicated servers commonly use UDP `16261` and `16262`. Open/forward them only when hosting beyond the LAN, and match your actual `KnoxNightmare.ini` values.
+`detect-local.sh` checks common native and Flatpak Steam roots plus libraries listed in `libraryfolders.vdf`. Do not assume Project Zomboid lives under one fixed home-directory path.
 
-## Fedora note
+Overrides are supported:
 
-The repository does not require the RPM Fusion SteamCMD package; the bundled installer path avoids distro packaging differences.
+```bash
+PZ_STEAMAPPS_DIR=/mnt/games/SteamLibrary/steamapps ./scripts/install-local.sh solo
+```
 
-## Upgrade from Build 41
+## Save protection
 
-Do not overwrite a Build 41 world with Build 42. Preserve the B41 cachedir as an archive and create a fresh Build 42.20 world unless a specifically tested migration procedure is documented later.
+Local installers back up the entire existing `Saves/` tree before installing a preset and never convert or modify an existing world. Dedicated-server operations should use `backup.sh` before Build/mod changes.
+
+## Build 41
+
+Do not overwrite a Build 41 world with Build 42. Preserve B41 saves separately and create a new Build 42.20 Knox Nightmare world unless a future tested migration procedure is documented.

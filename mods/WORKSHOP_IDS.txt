@@ -1,8 +1,23 @@
-# Knox Nightmare documented Workshop IDs (non-rejected)
-# status        id          name
-approved        3676814360  DEZ - Dynamic Evolution Z
-approved        3627773043  LED Lantern
-candidate       2499635888  Afraid of Monsters zombies
-candidate       2714850307  Horde Night
-candidate       2335368829  Authentic Z
-hold            3592043816  They Fear the Light
+# Approved default Workshop IDs by target
+[SOLO]
+3676814360
+3627773043
+2971021306
+3656190498
+3783282009
+3783282817
+3713005182
+2499635888
+
+[COOP]
+3676814360
+3627773043
+2971021306
+3783282009
+3783282817
+3713005182
+
+[SERVER]
+3676814360
+3627773043
+3713005182

@@ -1,8 +1,23 @@
-# Knox Nightmare documented Mod IDs (non-rejected)
-# status        mod_id
-approved        DynamicEvolutionZ
-approved        LEDFlashlight
-candidate       afraidofmonsterszombies
-candidate       HordeNight01
-candidate       Authentic Z - Current
-hold            TheyFearTheLight
+# Approved default Mod IDs by target
+[SOLO]
+DynamicEvolutionZ
+LEDFlashlight
+SurvivingTheStorm
+ReactiveSE
+SpecialZombiesB42
+SpecialZombiesScreamerB42
+HHNR
+afraidofmonsterszombies
+
+[COOP]
+DynamicEvolutionZ
+LEDFlashlight
+SurvivingTheStorm
+SpecialZombiesB42
+SpecialZombiesScreamerB42
+HHNR
+
+[SERVER]
+DynamicEvolutionZ
+LEDFlashlight
+HHNR
