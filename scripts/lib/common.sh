@@ -17,7 +17,7 @@ load_env() {
   : "${STEAMCMD_DIR:=$KNOX_ROOT/steamcmd}"
   : "${BACKUP_DIR:=$KNOX_ROOT/backups}"
   : "${SERVER_NAME:=KnoxNightmare}"
-  : "${MOD_PROFILE:=core}"
+  : "${MOD_PROFILE:=server}"
   : "${PREFETCH_WORKSHOP:=0}"
 
   export KNOX_ROOT PZ_SERVER_DIR PZ_CACHE_DIR STEAMCMD_DIR BACKUP_DIR SERVER_NAME MOD_PROFILE PREFETCH_WORKSHOP
@@ -43,23 +43,41 @@ steamcmd_bin() {
 
 manifest_file() { printf '%s\n' "$REPO_ROOT/mods/manifest.tsv"; }
 server_template() { printf '%s\n' "$REPO_ROOT/config/server/KnoxNightmare.ini"; }
-sandbox_template() { printf '%s\n' "$REPO_ROOT/config/sandbox/KnoxNightmare_SandboxVars.lua"; }
+base_sandbox_cfg() { printf '%s\n' "$REPO_ROOT/config/sandbox/base.cfg"; }
+profile_sandbox_cfg() { printf '%s/config/profiles/%s.cfg\n' "$REPO_ROOT" "$1"; }
 active_server_ini() { printf '%s/Server/%s.ini\n' "$PZ_CACHE_DIR" "$SERVER_NAME"; }
 active_sandbox_lua() { printf '%s/Server/%s_SandboxVars.lua\n' "$PZ_CACHE_DIR" "$SERVER_NAME"; }
 
-profile_filter_awk() {
-  local profile="$1"
-  case "$profile" in
-    vanilla) printf '%s\n' 'NR==0' ;;
-    core) printf '%s\n' '$5=="approved" && $4=="core"' ;;
-    recommended) printf '%s\n' '$5=="approved" && ($4=="core" || $4=="utility")' ;;
-    horror-lab) printf '%s\n' '($5=="approved" || $5=="candidate") && ($4=="core" || $4=="utility" || $4=="horror" || $4=="visual")' ;;
-    *) die "Unknown mod profile: $profile (expected vanilla|core|recommended|horror-lab)" ;;
+target_from_profile() {
+  case "$1" in
+    solo|solo-lab) printf 'solo\n' ;;
+    coop|coop-lab) printf 'coop\n' ;;
+    server|server-lab|core|recommended|horror-lab) printf 'server\n' ;;
+    vanilla) printf 'vanilla\n' ;;
+    *) die "Unknown profile: $1 (expected solo|coop|server or a *-lab/legacy alias)" ;;
   esac
 }
 
 selected_manifest_rows() {
-  local profile="$1" filter
-  filter="$(profile_filter_awk "$profile")"
-  awk -F '\t' "NR>1 && ($filter)" "$(manifest_file)"
+  local profile="$1" target col allow_candidate=0
+  target="$(target_from_profile "$profile")"
+  [[ "$target" != "vanilla" ]] || return 0
+
+  case "$target" in
+    solo) col=6 ;;
+    coop) col=7 ;;
+    server) col=8 ;;
+    *) die "Unsupported target: $target" ;;
+  esac
+
+  case "$profile" in
+    *-lab|horror-lab) allow_candidate=1 ;;
+  esac
+
+  awk -F '\t' -v col="$col" -v allow_candidate="$allow_candidate" '
+    NR > 1 {
+      status = $col
+      if (status == "approved" || (allow_candidate == 1 && status == "candidate")) print
+    }
+  ' "$(manifest_file)" | sort -t $'\t' -k9,9n
 }

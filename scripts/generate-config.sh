@@ -6,8 +6,12 @@ source "$SCRIPT_DIR/lib/common.sh"
 load_env
 
 profile="${1:-$MOD_PROFILE}"
+target="$(target_from_profile "$profile")"
+[[ "$target" != "vanilla" ]] || target=server
 mkdir -p "$PZ_CACHE_DIR/Server"
 
+"$SCRIPT_DIR/configure-knox.sh" "$target"
+generated="$REPO_ROOT/.generated/$target"
 rows="$(selected_manifest_rows "$profile" || true)"
 workshop=""
 mods=""
@@ -20,9 +24,9 @@ out="$(active_server_ini)"
 cp "$(server_template)" "$out"
 sed -i -E "s|^WorkshopItems=.*$|WorkshopItems=$workshop|" "$out"
 sed -i -E "s|^Mods=.*$|Mods=$mods|" "$out"
-cp "$(sandbox_template)" "$(active_sandbox_lua)"
+cp "$generated/KnoxNightmare_SandboxVars.lua" "$(active_sandbox_lua)"
 
-log "Generated profile '$profile'"
+log "Generated '$profile' ($target)"
 log "Server config: $out"
 log "WorkshopItems=${workshop:-<none>}"
 log "Mods=${mods:-<none>}"
