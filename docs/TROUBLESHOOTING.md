@@ -1,42 +1,66 @@
 # Troubleshooting
 
-## Server will not start
+## Local Project Zomboid not detected
+
+```bash
+./scripts/detect-local.sh
+```
+
+If the game is on another Steam library, set the library explicitly:
+
+```bash
+PZ_STEAMAPPS_DIR=/path/to/SteamLibrary/steamapps ./scripts/install-local.sh solo
+```
+
+## SOLO preset does not appear
+
+Verify the generated preset was installed under your Project Zomboid user-data `Sandbox Presets` directory and relaunch the game after installation.
+
+```bash
+./scripts/configure-knox.sh solo
+./scripts/install-local.sh solo
+```
+
+## Local mods are missing
+
+Check the generated file:
+
+```text
+~/Zomboid/KnoxNightmare/solo/MISSING_WORKSHOP_URLS.txt
+```
+
+Subscribe through Steam and allow downloads to complete. Do not copy Workshop payloads into the repository.
+
+## CO-OP clients report missing mods
+
+Regenerate/reinstall CO-OP:
+
+```bash
+./scripts/install-local.sh coop
+```
+
+Verify every player receives the host's Workshop set before joining.
+
+## Dedicated server will not start
 
 ```bash
 ./scripts/validate-mods.sh
 bash -n scripts/*.sh scripts/lib/*.sh
+./scripts/generate-config.sh server
 ```
 
 Confirm `.env` paths and that `start-server.sh` exists under `PZ_SERVER_DIR`.
 
-## Clients report missing mods
-
-Regenerate configuration from the manifest:
-
-```bash
-./scripts/generate-config.sh core
-```
-
-Then stop the server cleanly, run:
-
-```bash
-./scripts/update-mods.sh
-```
-
-and restart.
-
 ## A mod broke after an upstream update
 
-1. Stop the server.
-2. Back up immediately.
-3. Move the mod from `approved/candidate` to `hold` in the manifest on a feature branch.
-4. Generate a safer profile.
-5. Test on a copy of the world before production.
+1. Stop/exit cleanly.
+2. Preserve a backup of the affected save/world.
+3. Demote the mod for the affected target in `mods/manifest.tsv` on a feature branch.
+4. Generate the safer profile.
+5. Test on a copy/new disposable world before returning to production.
 
-## World behaves differently after changing mods
+Removing a mod from a list does not guarantee persistent world data disappears; restore the matching pre-change backup if necessary.
 
-Workshop content can add persistent items/zones/data. Removing a mod from the INI does not guarantee a save is clean. Restore the pre-change backup if the world becomes unstable.
+## Steam Workshop online validation fails
 
-## Steam Workshop page validation fails
-
-Steam may rate-limit or block automated requests. `--online` validation is advisory; local manifest/config validation remains authoritative for structure, not upstream runtime behavior.
+Steam can rate-limit automated requests. `validate-mods.sh --online` is advisory; structural validation does not prove current gameplay compatibility.
