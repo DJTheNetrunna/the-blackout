@@ -2,7 +2,7 @@
 
 SOLO is the highest-horror profile and is designed for the normal Project Zomboid menu, not a dedicated server.
 
-## Install
+## Install — Linux / Steam Deck
 
 From the repository root:
 
@@ -11,20 +11,25 @@ From the repository root:
 ./scripts/install-local.sh solo
 ```
 
-Or from this directory:
+## Install — Windows 10/11
 
-```bash
-./install-local.sh
+From PowerShell in the repository root:
+
+```powershell
+.\scripts\windows\Detect-Local.ps1
+.\scripts\windows\Install-Local.ps1 solo
 ```
 
-The installer backs up existing saves, installs only the named Knox Nightmare preset, and lists any missing Steam Workshop subscriptions. It does not modify an existing world.
+Both installers detect the real Steam library, back up existing saves, install only the named Knox Nightmare preset, and list missing Steam Workshop subscriptions. They do not modify an existing world.
+
+Linux reference files are normally under `~/Zomboid/KnoxNightmare/solo/`. Windows reference files are normally under `%USERPROFILE%\Zomboid\KnoxNightmare\solo\`.
 
 ## Normal game UI
 
 After Steam has downloaded the listed Workshop items:
 
 1. Launch **Project Zomboid** normally through Steam.
-2. Open **Mods** and verify the SOLO Mod IDs listed in `~/Zomboid/KnoxNightmare/solo/MOD_IDS.txt` are enabled. Keep the generated order; frameworks must load before their dependents.
+2. Open **Mods** and verify the SOLO Mod IDs in the generated `KnoxNightmare/solo/MOD_IDS.txt` reference file are enabled. Keep the generated order; frameworks must load before their dependents.
 3. Return to the main menu and choose **Solo**.
 4. Choose **Custom Sandbox**.
 5. Choose a vanilla Exclusion Zone spawn location. Knox Nightmare currently adds no map mod, deliberately avoiding map conflicts.
@@ -91,4 +96,4 @@ The Fear Pass increases visual and event complexity. If FPS/simulation time degr
 
 ## Save safety
 
-Local backups are written under `~/knox-nightmare/local-backups/` by default with SHA-256 sidecars. The installer only writes a new named preset and Knox Nightmare reference files; it never rewrites existing saves.
+Linux backups are written under `~/knox-nightmare/local-backups/` by default as tar.gz + SHA-256. Windows backups are written under `%USERPROFILE%\knox-nightmare\local-backups\` as ZIP + SHA-256. The installers write a named preset and Knox Nightmare reference files; they never rewrite existing saves.
