@@ -10,12 +10,26 @@ Knox Nightmare is a reproducible **Project Zomboid Build 42.20.x** survival-horr
 
 All three share the same Build 42 sandbox source in `config/sandbox/base.cfg`. Small target overlays in `config/profiles/` change only the values that need to differ. `scripts/configure-knox.sh` renders the correct normal-game preset and server Lua rather than maintaining three unrelated worlds.
 
+## Fear Pass
+
+The current SOLO profile is deliberately more aggressive about horror. It uses one strong system per fear dimension instead of blindly stacking mods that overwrite the same mechanics:
+
+- **Bleak World - Horror** for oppressive visuals/fog/zombie presentation.
+- **Zombies Crash Through Windows** for interior danger.
+- **Reactive Sound Events** for unexplained scene/audio pressure.
+- **Special Zombies + Screamer** for rare chain-reaction threats.
+- **HHNR** for recurring large-scale pressure.
+- **Surviving the Storm** for weather that changes decisions.
+- **15% random sprinters** so movement speed remains uncertain without turning the whole population into sprinters.
+
+See `docs/SCARIER-BUILD-PLAN.md` for current candidate research and conflict policy.
+
 ## Build 42 horror model
 
 Knox Nightmare uses the current B42 mixed-speed system instead of making every zombie a permanent sprinter:
 
 - `ZombieLore.Speed=4` — random speed band.
-- `ZombieLore.SprinterPercentage` — 12% SOLO, 8% CO-OP, 6% SERVER.
+- `ZombieLore.SprinterPercentage` — **15% SOLO**, 8% CO-OP, 6% SERVER.
 - `ZombieLore.ActiveOnly=2` — full zombie activity is concentrated at night.
 - pitch-black, long nights.
 - strong sound attraction and frequent migration.
@@ -82,30 +96,22 @@ See [`KnoxNightmare/dedicated-server/README.md`](KnoxNightmare/dedicated-server/
 ./scripts/configure-knox.sh server
 ```
 
-Generated artifacts go under `.generated/<target>/`:
-
-```text
-Knox Nightmare - SOLO.cfg
-KnoxNightmare_SandboxVars.lua
-WORKSHOP_IDS.txt
-MOD_IDS.txt
-WORKSHOP_URLS.txt
-```
-
-CO-OP and SERVER also receive generated INI material.
+Generated artifacts go under `.generated/<target>/`.
 
 ## Default Workshop sets
 
-### SOLO
+### SOLO — Fear Pass
 
+- Starlit Library
 - DEZ — Dynamic Evolution Z
 - LED Lantern
 - Surviving the Storm
 - Reactive Sound Events
+- Bleak World - Horror
 - Special Zombies Framework
 - Special Zombies #01 — Screamer
 - Hark's Horde Night Revamped
-- Afraid of Monsters zombies
+- Zombies Crash Through Windows
 
 ### CO-OP
 
@@ -137,24 +143,6 @@ Server backup/restore remains available through:
 ```bash
 ./scripts/backup.sh
 ./scripts/restore.sh <archive.tar.gz>
-```
-
-## Repository map
-
-```text
-.
-├── config/
-│   ├── sandbox/base.cfg
-│   ├── profiles/{solo,coop,server}.cfg
-│   └── server/
-├── KnoxNightmare/
-│   ├── singleplayer/
-│   ├── multiplayer/
-│   └── dedicated-server/
-├── mods/
-├── scripts/
-├── docs/
-└── .github/workflows/validate.yml
 ```
 
 ## Validation
