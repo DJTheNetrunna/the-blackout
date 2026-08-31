@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  validate-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,3 +24,27 @@ jobs:
 
       - name: Exercise mocked install/update/launch/backup/restore lifecycle
         run: ./scripts/test.sh
+
+  validate-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem .\scripts\windows\*.ps1, .\scripts\windows\*.psm1
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | Format-List | Out-String | Write-Error
+              exit 1
+            }
+          }
+
+      - name: Exercise Windows SOLO and CO-OP lifecycle
+        shell: pwsh
+        run: .\scripts\windows\Test-Windows.ps1
