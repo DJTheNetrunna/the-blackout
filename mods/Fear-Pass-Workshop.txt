@@ -1,0 +1,11 @@
+# Knox Nightmare SOLO Fear Pass default Workshop IDs
+3378285185  # Starlit Library
+3676814360  # DEZ - Dynamic Evolution Z
+3627773043  # LED Lantern
+2971021306  # Surviving the Storm
+3656190498  # Reactive Sound Events
+3403923830  # Bleak World - Horror
+3783282009  # Special Zombies Framework
+3783282817  # Special Zombies #01 - Screamer
+3713005182  # Hark's Horde Night Revamped
+3423871533  # Zombies Crash Through Windows
