@@ -1,14 +1,25 @@
 # The Blackout — Knox Nightmare
 
-Knox Nightmare is a reproducible **Project Zomboid Build 42.20.x** survival-horror build for Linux with three first-class targets:
+Knox Nightmare is a reproducible **Project Zomboid Build 42.20.x** survival-horror build with first-class local support on **Linux and Windows**, hosted CO-OP support on both, and Linux-first dedicated-server automation.
 
 | Profile | Purpose | Default philosophy |
 |---|---|---|
 | **SOLO** | Normal single-player / local game | Maximum atmosphere, audio, rare special infected, darkness and isolation |
 | **CO-OP** | Steam/local hosted multiplayer | Horror with mods that have current hosted-MP evidence |
-| **SERVER** | Dedicated Linux server | Stability, synchronization, predictable resource use and administration |
+| **SERVER** | Dedicated server | Stability, synchronization, predictable resource use and administration |
 
-All three share the same Build 42 sandbox source in `config/sandbox/base.cfg`. Small target overlays in `config/profiles/` change only the values that need to differ. `scripts/configure-knox.sh` renders the correct normal-game preset and server Lua rather than maintaining three unrelated worlds.
+All three share the same Build 42 sandbox source in `config/sandbox/base.cfg`. Small target overlays in `config/profiles/` change only the values that need to differ. Linux Bash and Windows PowerShell generators consume the same source files and `mods/manifest.tsv`, so Windows is not a separate modpack.
+
+## Platform support
+
+| Platform | SOLO | Hosted CO-OP | Dedicated server automation |
+|---|---|---|---|
+| Linux desktop | ✅ | ✅ | ✅ |
+| Steam Deck / SteamOS | ✅ Linux path | ✅ Linux path | Not a primary target |
+| Windows 10/11 | ✅ Native PowerShell | ✅ Native PowerShell | Not automated yet |
+| macOS | Experimental/manual | Experimental/manual | No |
+
+See [`docs/PLATFORM-SUPPORT.md`](docs/PLATFORM-SUPPORT.md) and [`docs/WINDOWS.md`](docs/WINDOWS.md).
 
 ## Fear Pass
 
@@ -40,7 +51,7 @@ Knox Nightmare uses the current B42 mixed-speed system instead of making every z
 - blood-and-saliva infection with 2–3 day mortality.
 - no multi-hit or starter kit.
 
-## SOLO quick start
+## Linux / Steam Deck SOLO quick start
 
 ```bash
 git clone https://github.com/DJTheNetrunna/the-blackout.git
@@ -50,30 +61,52 @@ cd the-blackout
 ./scripts/install-local.sh solo
 ```
 
-The local installer:
+## Windows SOLO quick start
 
-1. detects the Steam library actually containing Project Zomboid;
-2. detects the matching `steamapps/workshop/content/108600` directory;
-3. uses the local Project Zomboid data directory (normally `~/Zomboid`);
-4. backs up existing local saves before installing anything;
-5. generates and installs `Knox Nightmare - SOLO.cfg` into `Sandbox Presets`;
-6. writes the selected Workshop URLs and Mod IDs under `~/Zomboid/KnoxNightmare/solo/`;
-7. reports missing Workshop subscriptions;
-8. never changes an existing world.
+Open PowerShell in the repository directory:
+
+```powershell
+git clone https://github.com/DJTheNetrunna/the-blackout.git
+Set-Location .\the-blackout
+
+.\scripts\windows\Detect-Local.ps1
+.\scripts\windows\Install-Local.ps1 solo
+```
+
+The local installers on both platforms:
+
+1. detect the Steam library actually containing Project Zomboid;
+2. detect the matching `steamapps/workshop/content/108600` directory;
+3. use the local Project Zomboid data directory (`~/Zomboid` on Linux, `%USERPROFILE%\Zomboid` on Windows);
+4. back up existing local saves before installing anything;
+5. generate and install `Knox Nightmare - SOLO.cfg` into `Sandbox Presets`;
+6. write selected Workshop URLs and Mod IDs under `Zomboid/KnoxNightmare/solo/`;
+7. report missing Workshop subscriptions;
+8. never change an existing world.
 
 Then subscribe to any reported missing Workshop items in the normal Steam client and follow [`KnoxNightmare/singleplayer/README.md`](KnoxNightmare/singleplayer/README.md).
 
 ## CO-OP quick start
 
+Linux / Steam Deck:
+
 ```bash
 ./scripts/install-local.sh coop
 ```
 
-This performs the same save-safe local installation and additionally installs a separate `KnoxNightmare-Coop.ini` and `KnoxNightmare-Coop_SandboxVars.lua` under your Project Zomboid `Server/` directory. Existing host profiles are left untouched.
+Windows:
+
+```powershell
+.\scripts\windows\Install-Local.ps1 coop
+```
+
+This performs the same save-safe local installation and additionally installs a separate `KnoxNightmare-Coop.ini` and `KnoxNightmare-Coop_SandboxVars.lua` under the Project Zomboid `Server/` directory. Existing host profiles are left untouched.
 
 See [`KnoxNightmare/multiplayer/README.md`](KnoxNightmare/multiplayer/README.md).
 
 ## Dedicated server quick start
+
+The automated dedicated-server path remains Linux-first:
 
 ```bash
 cp config/examples/knox-nightmare.env.example .env
@@ -90,10 +123,20 @@ See [`KnoxNightmare/dedicated-server/README.md`](KnoxNightmare/dedicated-server/
 
 ## Generate without installing
 
+Linux:
+
 ```bash
 ./scripts/configure-knox.sh solo
 ./scripts/configure-knox.sh coop
 ./scripts/configure-knox.sh server
+```
+
+Windows:
+
+```powershell
+.\scripts\windows\Configure-Knox.ps1 solo
+.\scripts\windows\Configure-Knox.ps1 coop
+.\scripts\windows\Configure-Knox.ps1 server
 ```
 
 Generated artifacts go under `.generated/<target>/`.
@@ -132,11 +175,11 @@ Candidate/hold/rejected status is target-specific. A strong SOLO mod is no longe
 
 ## Steam installation policy
 
-No Workshop payloads are redistributed. The normal local path is Steam subscriptions; the repository detects the Steam library instead of assuming `~/.steam` or `~/.local/share/Steam`. SteamCMD remains the dedicated-server install/update mechanism and can prefetch Workshop items where Valve permits it.
+No Workshop payloads are redistributed. Normal local installation uses Steam subscriptions. Both platform installers detect the real Steam library instead of assuming one fixed location or drive. SteamCMD remains the Linux dedicated-server install/update mechanism and can prefetch Workshop items where Valve permits it.
 
 ## Save protection
 
-`install-local.sh` backs up the entire existing `Saves/` tree before installing the Knox preset unless `KNOX_SKIP_SAVE_BACKUP=1` is deliberately set. It never edits an existing save. Knox Nightmare must be started as a **new world**.
+Linux `install-local.sh` and Windows `Install-Local.ps1` back up existing saves before installing the Knox preset unless the user explicitly chooses to skip backup. They never edit an existing save. Knox Nightmare must be started as a **new world**.
 
 Server backup/restore remains available through:
 
@@ -147,9 +190,9 @@ Server backup/restore remains available through:
 
 ## Validation
 
-GitHub CI validates shell syntax, ShellCheck, manifest shape/dependencies/load order, Build 42 preset generation, Lua syntax, all three target profiles, mocked SteamCMD install/update, local Steam path detection, local save backup, SOLO preset installation, CO-OP host configuration, server launch, backup and restore.
+GitHub CI now has separate Linux and Windows jobs. Linux validates shell syntax, manifest/profile generation, SteamCMD/server lifecycle, save backup, local install and restore. Windows validates PowerShell syntax, Steam/Workshop path detection, Fear Pass preset generation, save preservation + ZIP/SHA-256 backup, SOLO installation and hosted CO-OP configuration.
 
-Live gameplay still has to be tested on an actual Project Zomboid client/server. Static or mocked CI is never reported as a successful gameplay playtest.
+Live gameplay still has to be tested on actual Project Zomboid clients/servers. Static or mocked CI is never reported as a successful gameplay playtest.
 
 ## License
 
