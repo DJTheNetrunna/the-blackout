@@ -28,7 +28,8 @@ The new SOLO Fear Pass now has:
 - recurring horde-night pressure
 - scarce guns, ammo, medicine, fuel and reliable vehicles
 - no minimap and a world map that needs light
-- save-safe Linux installer + normal Steam Workshop support
+- save-safe native installers for **Windows and Linux/Steam Deck**
+- normal Steam Workshop support with missing-mod detection
 
 The part I'm most interested in is **psychological pressure**.
 
@@ -48,6 +49,13 @@ There are three builds:
 **SOLO** — maximum horror and immersion.
 **CO-OP** — scary, but built around hosted-MP compatibility.
 **SERVER** — dedicated-server stability first, horror second.
+
+Current platform support:
+
+**Windows 10/11** — native PowerShell SOLO + hosted CO-OP installer.
+**Linux** — native SOLO + CO-OP + dedicated-server tooling.
+**Steam Deck / SteamOS** — uses the Linux local path.
+**macOS** — manual/experimental for now; not claiming full support until the stack is tested there.
 
 The project is public on GitHub as:
 
