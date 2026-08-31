@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-30 — Native Windows local support
+
+- Added native PowerShell SOLO and hosted CO-OP installers for Windows 10/11.
+- Added Steam registry + `libraryfolders.vdf` detection so Project Zomboid can live on C:, D:, or another Steam library.
+- Added Windows Project Zomboid data/Workshop detection.
+- Added ZIP + SHA-256 backups of existing Windows saves before preset installation.
+- Added Windows profile generation from the same shared sandbox and manifest used by Linux.
+- Added isolated Windows CO-OP config installation with backup-before-replace behavior.
+- Added `windows-latest` CI coverage for PowerShell syntax, Fear Pass generation, save preservation, SOLO install, Workshop detection, and hosted CO-OP config.
+- Added platform-support and Windows installation documentation.
+
 ## 2026-08-30 — Fear Pass
 
 - Increased SOLO rare sprinters from 12% to 15%.
