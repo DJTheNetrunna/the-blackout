@@ -51,8 +51,8 @@ try {
     & $install solo | Out-Null
     Assert-True ((Get-Content -LiteralPath (Join-Path $existingSave 'map.bin') -Raw).Trim() -eq 'existing-save') 'Existing save was modified'
     Assert-True (Test-Path -LiteralPath (Join-Path $dataDir 'Sandbox Presets\Knox Nightmare - SOLO.cfg')) 'SOLO preset was not installed'
-    Assert-True ((Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip').Count -ge 1) 'Local save backup was not created'
-    Assert-True ((Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip.sha256').Count -ge 1) 'Backup SHA256 sidecar was not created'
+    Assert-True (@(Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip').Count -ge 1) 'Local save backup was not created'
+    Assert-True (@(Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip.sha256').Count -ge 1) 'Backup SHA256 sidecar was not created'
 
     & $configure coop | Out-Null
     $coopOut = Join-Path $repoRoot '.generated\coop'
