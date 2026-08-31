@@ -205,7 +205,7 @@ function Backup-KnoxLocalSaves {
 
     $backupRoot = if ($env:KNOX_BACKUP_ROOT) { $env:KNOX_BACKUP_ROOT } else { Join-Path $env:USERPROFILE 'knox-nightmare\local-backups' }
     New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
-    $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')
+    $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmssfff')
     $archive = Join-Path $backupRoot "local-saves-$stamp.zip"
     Compress-Archive -LiteralPath $saves -DestinationPath $archive -CompressionLevel Optimal
     $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $archive).Hash.ToLowerInvariant()
@@ -223,7 +223,7 @@ function Copy-KnoxFileSafely {
             $backupRoot = if ($env:KNOX_BACKUP_ROOT) { $env:KNOX_BACKUP_ROOT } else { Join-Path $env:USERPROFILE 'knox-nightmare\local-backups' }
             $destBackup = Join-Path $backupRoot $BackupCategory
             New-Item -ItemType Directory -Force -Path $destBackup | Out-Null
-            $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')
+            $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmssfff')
             Copy-Item -LiteralPath $Destination -Destination (Join-Path $destBackup "$([IO.Path]::GetFileName($Destination)).$stamp.bak")
         }
     }
