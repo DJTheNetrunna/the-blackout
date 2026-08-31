@@ -46,8 +46,15 @@ for target in solo coop server; do
   test -f "$REPO_ROOT/.generated/$target/KnoxNightmare_SandboxVars.lua"
 done
 
-grep -Fxq 'ZombieLore.SprinterPercentage=12' "$REPO_ROOT/.generated/solo/Knox Nightmare - SOLO.cfg"
+grep -Fxq 'ZombieLore.SprinterPercentage=15' "$REPO_ROOT/.generated/solo/Knox Nightmare - SOLO.cfg"
 grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
+grep -Fxq 'BleakWorldHorror' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
+grep -Fxq 'StarlitLibrary' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
+grep -Fxq 'ZCTWS' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
+if grep -Fxq 'afraidofmonsterszombies' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"; then
+  printf 'Afraid of Monsters conflicts with default Bleak World SOLO visual layer\n' >&2
+  exit 1
+fi
 if grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/coop/MOD_IDS.txt"; then
   printf 'ReactiveSE leaked into default CO-OP profile\n' >&2
   exit 1
@@ -107,4 +114,4 @@ for profile in vanilla server server-lab; do
   fi
 done
 
-printf '[knox-nightmare] SOLO + CO-OP + SERVER mocked lifecycle tests passed\n'
+printf '[knox-nightmare] SOLO Fear Pass + CO-OP + SERVER mocked lifecycle tests passed\n'

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-30 — Fear Pass
+
+- Increased SOLO rare sprinters from 12% to 15%.
+- Added maintained Bleak World - Horror as the default SOLO visual/fog layer.
+- Added Starlit Library + Zombies Crash Through Windows to make interiors less reliably safe.
+- Moved Afraid of Monsters from SOLO default to alternate candidate because it conflicts with Bleak World zombie retextures.
+- Added researched candidates for Occult Zombies, Knox Acoustics/ZombieBuddy, and ApocalipseBR Projeto Nemesis.
+- Put Lingering Whispers on hold after current late-August B42.20 error reports.
+- Added explicit conflict-first horror design guidance and Steam discussion announcement draft.
+- Expanded CI assertions for the Fear Pass default mod set.
+
 ## 2026-08-30 — SOLO / CO-OP / SERVER profiles
 
 - Promoted single-player to a first-class build target.
