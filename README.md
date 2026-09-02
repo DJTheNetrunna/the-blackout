@@ -2,6 +2,44 @@
 
 Knox Nightmare is a reproducible **Project Zomboid Build 42.20.x** survival-horror build with first-class local support on **Linux and Windows**, hosted CO-OP support on both, and Linux-first dedicated-server automation.
 
+## Easiest install
+
+You do not need to run the individual scripts or manually find Steam folders.
+
+### Windows 10/11
+
+1. Download this repository with **Code → Download ZIP** and extract it, or clone it with Git.
+2. Double-click **`KnoxNightmare.bat`**.
+3. Choose **Install SOLO** (recommended) or **Install hosted CO-OP**.
+4. If mods are missing, the installer creates one Workshop helper page. Subscribe to each listed mod and let Steam finish downloading.
+5. Launch Project Zomboid and create a **new** Knox Nightmare world.
+
+### Linux / Steam Deck
+
+```bash
+git clone https://github.com/DJTheNetrunna/the-blackout.git
+cd the-blackout
+./knox-nightmare
+```
+
+Choose **Install SOLO** from the menu. Steam Deck users should run this in Desktop Mode.
+
+### Updating later
+
+Open the same launcher and choose **Update**, or run:
+
+```bash
+./knox-nightmare update solo
+```
+
+```powershell
+.\KnoxNightmare.bat update solo
+```
+
+Automatic updates work in a Git clone. The updater backs up local saves, refuses unsafe Git states, fast-forwards from the official `main` branch, and reinstalls the current preset/mod list. ZIP users can install normally but must download a fresh ZIP for code updates.
+
+See [`docs/EASY-INSTALL.md`](docs/EASY-INSTALL.md) for the short walkthrough and recovery guidance.
+
 | Profile | Purpose | Default philosophy |
 |---|---|---|
 | **SOLO** | Normal single-player / local game | Maximum atmosphere, audio, rare special infected, darkness and isolation |
@@ -51,17 +89,16 @@ Knox Nightmare uses the current B42 mixed-speed system instead of making every z
 - blood-and-saliva infection with 2–3 day mortality.
 - no multi-hit or starter kit.
 
-## Linux / Steam Deck SOLO quick start
+## Advanced Linux / Steam Deck SOLO install
 
 ```bash
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 cd the-blackout
 
-./scripts/detect-local.sh
-./scripts/install-local.sh solo
+./knox-nightmare install solo
 ```
 
-## Windows SOLO quick start
+## Advanced Windows SOLO install
 
 Open PowerShell in the repository directory:
 
@@ -69,8 +106,7 @@ Open PowerShell in the repository directory:
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 Set-Location .\the-blackout
 
-.\scripts\windows\Detect-Local.ps1
-.\scripts\windows\Install-Local.ps1 solo
+.\KnoxNightmare.bat install solo
 ```
 
 The local installers on both platforms:
@@ -91,13 +127,13 @@ Then subscribe to any reported missing Workshop items in the normal Steam client
 Linux / Steam Deck:
 
 ```bash
-./scripts/install-local.sh coop
+./knox-nightmare install coop
 ```
 
 Windows:
 
 ```powershell
-.\scripts\windows\Install-Local.ps1 coop
+.\KnoxNightmare.bat install coop
 ```
 
 This performs the same save-safe local installation and additionally installs a separate `KnoxNightmare-Coop.ini` and `KnoxNightmare-Coop_SandboxVars.lua` under the Project Zomboid `Server/` directory. Existing host profiles are left untouched.

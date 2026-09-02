@@ -8,8 +8,8 @@ function Assert-True {
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $configure = Join-Path $PSScriptRoot 'Configure-Knox.ps1'
-$install = Join-Path $PSScriptRoot 'Install-Local.ps1'
 $detect = Join-Path $PSScriptRoot 'Detect-Local.ps1'
+$easy = Join-Path $PSScriptRoot 'Knox-Nightmare.ps1'
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("knox-nightmare-win-" + [guid]::NewGuid().ToString('N'))
 
 try {
@@ -47,10 +47,16 @@ try {
     foreach ($id in Get-Content -LiteralPath (Join-Path $soloOut 'WORKSHOP_IDS.txt')) {
         if ($id) { New-Item -ItemType Directory -Force -Path (Join-Path $workshop $id) | Out-Null }
     }
+    $missingTestId = (Get-Content -LiteralPath (Join-Path $soloOut 'WORKSHOP_IDS.txt') | Select-Object -First 1)
+    Remove-Item -LiteralPath (Join-Path $workshop $missingTestId) -Recurse -Force
 
-    & $install solo | Out-Null
+    & $easy doctor | Out-Null
+    & $easy install solo -NoOpen | Out-Null
     Assert-True ((Get-Content -LiteralPath (Join-Path $existingSave 'map.bin') -Raw).Trim() -eq 'existing-save') 'Existing save was modified'
     Assert-True (Test-Path -LiteralPath (Join-Path $dataDir 'Sandbox Presets\Knox Nightmare - SOLO.cfg')) 'SOLO preset was not installed'
+    $helper = Join-Path $dataDir 'KnoxNightmare\solo\INSTALL-MISSING-MODS.html'
+    Assert-True (Test-Path -LiteralPath $helper) 'Missing-Workshop helper was not created'
+    Assert-True ((Get-Content -LiteralPath $helper -Raw) -match "id=$missingTestId") 'Missing-Workshop helper omitted the missing mod'
     Assert-True (@(Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip').Count -ge 1) 'Local save backup was not created'
     Assert-True (@(Get-ChildItem -LiteralPath $backupRoot -Filter 'local-saves-*.zip.sha256').Count -ge 1) 'Backup SHA256 sidecar was not created'
 
@@ -59,7 +65,7 @@ try {
     foreach ($id in Get-Content -LiteralPath (Join-Path $coopOut 'WORKSHOP_IDS.txt')) {
         if ($id) { New-Item -ItemType Directory -Force -Path (Join-Path $workshop $id) | Out-Null }
     }
-    & $install coop | Out-Null
+    & $easy install coop -NoOpen | Out-Null
     Assert-True (Test-Path -LiteralPath (Join-Path $dataDir 'Server\KnoxNightmare-Coop.ini')) 'CO-OP INI was not installed'
     Assert-True (Test-Path -LiteralPath (Join-Path $dataDir 'Server\KnoxNightmare-Coop_SandboxVars.lua')) 'CO-OP sandbox Lua was not installed'
 

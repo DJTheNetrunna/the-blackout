@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPTS="$REPO_ROOT/scripts"
+
+# shellcheck source=scripts/lib/common.sh
+source "$SCRIPTS/lib/common.sh"
+# shellcheck source=scripts/lib/local.sh
+source "$SCRIPTS/lib/local.sh"
+load_env
+
+usage() {
+  cat <<'EOF'
+Knox Nightmare easy installer
+
+Usage:
+  ./knox-nightmare                         Interactive menu
+  ./knox-nightmare install [solo|coop]    Install or repair a local preset
+  ./knox-nightmare update [solo|coop]     Back up saves, update this repo, reinstall
+  ./knox-nightmare doctor                 Check Project Zomboid and Steam paths
+  ./knox-nightmare help                   Show this help
+
+Options:
+  --no-open    Do not offer to open the missing-mod Workshop helper
+
+Examples:
+  ./knox-nightmare install solo
+  ./knox-nightmare update solo
+EOF
+}
+
+validate_target() {
+  case "$1" in
+    solo|coop) ;;
+    *) die "Profile must be 'solo' or 'coop'." ;;
+  esac
+}
+
+workshop_helper() {
+  local target="$1" open_mode="$2" missing helper url
+  detect_local_paths || return 0
+  missing="$PZ_DATA_DIR/KnoxNightmare/$target/MISSING_WORKSHOP_URLS.txt"
+  [[ -s "$missing" ]] || return 0
+
+  helper="$PZ_DATA_DIR/KnoxNightmare/$target/INSTALL-MISSING-MODS.html"
+  {
+    printf '%s\n' '<!doctype html>' '<html lang="en"><meta charset="utf-8">' \
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' \
+      '<title>Knox Nightmare - Missing Mods</title>' \
+      '<style>body{font:18px system-ui;max-width:850px;margin:3rem auto;padding:0 1rem;background:#0b0b0d;color:#eee}a{color:#ff4d67}li{margin:.8rem 0}</style>' \
+      '<h1>Install the missing Knox Nightmare mods</h1>' \
+      '<p>Open each link, select <strong>Subscribe</strong>, and wait for Steam to finish downloading before starting Project Zomboid.</p><ol>'
+    while IFS= read -r url; do
+      [[ "$url" =~ ^https://steamcommunity\.com/sharedfiles/filedetails/\?id=[0-9]+$ ]] || continue
+      printf '<li><a href="%s">%s</a></li>\n' "$url" "$url"
+    done < "$missing"
+    printf '%s\n' '</ol><p>You can close this page after Steam finishes.</p></html>'
+  } > "$helper"
+
+  log "Missing-mod helper: $helper"
+  [[ "$open_mode" == "no-open" ]] && return 0
+
+  if [[ -t 0 ]]; then
+    printf 'Open the missing-mod page now? [Y/n] '
+    read -r answer
+    case "${answer:-y}" in
+      y|Y|yes|YES)
+        if command -v xdg-open >/dev/null 2>&1; then
+          xdg-open "$helper" >/dev/null 2>&1 &
+          log "Opened the missing-mod page."
+        else
+          warn "xdg-open is unavailable. Open the helper file shown above in a browser."
+        fi
+        ;;
+    esac
+  fi
+}
+
+install_local() {
+  local target="$1" open_mode="$2"
+  validate_target "$target"
+  "$SCRIPTS/install-local.sh" "$target"
+  workshop_helper "$target" "$open_mode"
+  printf '\n'
+  log "READY: launch Project Zomboid and create a NEW $target world."
+}
+
+safe_repo_update() {
+  require_cmd git
+  git -C "$REPO_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
+    die "This is a ZIP copy, so it cannot self-update. Download the newest ZIP from GitHub, extract it, and run KnoxNightmare again."
+
+  local branch remote_url dirty
+  branch="$(git -C "$REPO_ROOT" branch --show-current)"
+  [[ "$branch" == "main" ]] || die "Safe update requires the main branch; current branch is '${branch:-detached}'."
+  remote_url="$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || true)"
+  case "$remote_url" in
+    https://github.com/DJTheNetrunna/the-blackout.git|git@github.com:DJTheNetrunna/the-blackout.git) ;;
+    *) die "Origin is not the official Knox Nightmare repository; refusing to pull." ;;
+  esac
+
+  dirty="$(git -C "$REPO_ROOT" status --porcelain --untracked-files=normal)"
+  [[ -z "$dirty" ]] || die "Repository has local changes. Save or commit them before updating; nothing was pulled."
+
+  log "Checking GitHub for Knox Nightmare updates..."
+  git -C "$REPO_ROOT" fetch origin main
+  git -C "$REPO_ROOT" merge --ff-only origin/main
+}
+
+update_local() {
+  local target="$1" open_mode="$2"
+  validate_target "$target"
+
+  detect_local_paths || die "Project Zomboid was not detected. Run './knox-nightmare doctor' for details."
+  "$SCRIPTS/backup-local-saves.sh"
+  safe_repo_update
+  KNOX_SKIP_SAVE_BACKUP=1 "$SCRIPTS/install-local.sh" "$target"
+  workshop_helper "$target" "$open_mode"
+  printf '\n'
+  log "UPDATE COMPLETE: code, preset, and mod list are current. Existing saves were not modified."
+}
+
+doctor() {
+  printf 'Knox Nightmare system check\n\n'
+  printf 'Repository: %s\n' "$REPO_ROOT"
+  if command -v git >/dev/null 2>&1 && git -C "$REPO_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    printf 'Git update: ✅ available (%s)\n' "$(git -C "$REPO_ROOT" rev-parse --short HEAD)"
+  else
+    printf 'Git update: ⚠ unavailable (ZIP/manual update mode)\n'
+  fi
+
+  if detect_local_paths; then
+    printf 'Project Zomboid: ✅ detected\n'
+    printf 'Game:       %s\n' "$PZ_GAME_DIR"
+    printf 'Workshop:   %s\n' "$PZ_WORKSHOP_DIR"
+    printf 'User data:  %s\n' "$PZ_DATA_DIR"
+  else
+    printf 'Project Zomboid: ❌ not detected\n' >&2
+    printf 'Install Project Zomboid through Steam or set PZ_STEAMAPPS_DIR.\n' >&2
+    return 1
+  fi
+}
+
+menu() {
+  [[ -t 0 ]] || { usage; return 1; }
+  while true; do
+    printf '\nKNOX NIGHTMARE\n'
+    printf '  1) Install SOLO (recommended)\n'
+    printf '  2) Install hosted CO-OP\n'
+    printf '  3) Update SOLO\n'
+    printf '  4) Update hosted CO-OP\n'
+    printf '  5) System check\n'
+    printf '  6) Exit\n'
+    printf 'Choose [1-6]: '
+    read -r choice
+    case "$choice" in
+      1) install_local solo open ;;
+      2) install_local coop open ;;
+      3) update_local solo open ;;
+      4) update_local coop open ;;
+      5) doctor || true ;;
+      6) return 0 ;;
+      *) warn "Choose a number from 1 to 6." ;;
+    esac
+  done
+}
+
+action="${1:-menu}"
+[[ $# -eq 0 ]] || shift
+target="solo"
+open_mode="open"
+for arg in "$@"; do
+  case "$arg" in
+    solo|coop) target="$arg" ;;
+    --no-open) open_mode="no-open" ;;
+    *) die "Unknown argument: $arg. Run './knox-nightmare help'." ;;
+  esac
+done
+
+case "$action" in
+  menu) menu ;;
+  install) install_local "$target" "$open_mode" ;;
+  update) update_local "$target" "$open_mode" ;;
+  doctor) doctor ;;
+  help|-h|--help) usage ;;
+  *) die "Unknown command: $action. Run './knox-nightmare help'." ;;
+esac

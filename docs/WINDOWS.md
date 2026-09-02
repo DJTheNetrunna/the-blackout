@@ -2,6 +2,16 @@
 
 Knox Nightmare now includes a native **PowerShell** installer for normal single-player and Steam-hosted CO-OP. WSL and Git Bash are not required.
 
+## Easy install
+
+Extract the repository, then double-click:
+
+```text
+KnoxNightmare.bat
+```
+
+Choose SOLO, hosted CO-OP, Update, or System Check from the menu. The batch launcher uses the native PowerShell implementation without requiring users to type an execution-policy command.
+
 ## Requirements
 
 - Windows 10 or Windows 11
@@ -21,8 +31,7 @@ Open PowerShell in the repository directory:
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 Set-Location .\the-blackout
 
-.\scripts\windows\Detect-Local.ps1
-.\scripts\windows\Install-Local.ps1 solo
+.\KnoxNightmare.bat install solo
 ```
 
 The installer will:
@@ -46,7 +55,7 @@ Do not test the pack by continuing an existing save.
 ## CO-OP install
 
 ```powershell
-.\scripts\windows\Install-Local.ps1 coop
+.\KnoxNightmare.bat install coop
 ```
 
 In addition to the save-safe preset install, CO-OP installs isolated files:
@@ -79,6 +88,16 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\windows\Instal
 ```
 
 Do not disable PowerShell security globally just to run Knox Nightmare.
+
+## Updating
+
+Git-based installations can update safely from the menu or with:
+
+```powershell
+.\KnoxNightmare.bat update solo
+```
+
+The updater backs up saves before fetching, accepts only the official repository on `main`, refuses a dirty worktree, fast-forwards without rewriting history, and reinstalls the selected preset. ZIP installations remain fully supported for installation but require a fresh ZIP for code updates.
 
 ## Advanced path overrides
 

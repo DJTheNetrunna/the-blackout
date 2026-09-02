@@ -69,20 +69,25 @@ grep -Fxq 'HHNR' "$REPO_ROOT/.generated/server/MOD_IDS.txt"
 # Local Steam detection
 "$SCRIPT_DIR/detect-local.sh" --shell > "$tmp/detected.txt"
 grep -Fq "$tmp/Steam/steamapps" "$tmp/detected.txt"
+"$REPO_ROOT/knox-nightmare" help | grep -Fq 'Interactive menu'
+"$REPO_ROOT/knox-nightmare" doctor | grep -Fq 'Project Zomboid: ✅ detected'
 
 # Pretend Steam already downloaded SOLO's selected Workshop items.
 while IFS= read -r wid; do
   [[ -n "$wid" ]] && mkdir -p "$PZ_WORKSHOP_DIR/$wid"
 done < "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt"
+missing_test_id="$(head -n 1 "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt")"
+rm -rf "$PZ_WORKSHOP_DIR/$missing_test_id"
 
 # Local install must back up but preserve the existing save.
-"$SCRIPT_DIR/install-local.sh" solo >/dev/null
+"$REPO_ROOT/knox-nightmare" install solo --no-open >/dev/null
 grep -Fxq 'existing-save' "$tmp/localdata/Saves/Sandbox/ExistingWorld/map.bin"
 test -f "$tmp/localdata/Sandbox Presets/Knox Nightmare - SOLO.cfg"
+grep -Fq "id=$missing_test_id" "$tmp/localdata/KnoxNightmare/solo/INSTALL-MISSING-MODS.html"
 find "$tmp/root/local-backups" -type f -name 'local-saves-*.tar.gz' | grep -q .
 
 # Hosted CO-OP install is isolated under its own names.
-"$SCRIPT_DIR/install-local.sh" coop >/dev/null
+"$REPO_ROOT/knox-nightmare" install coop --no-open >/dev/null
 test -f "$tmp/localdata/Server/KnoxNightmare-Coop.ini"
 test -f "$tmp/localdata/Server/KnoxNightmare-Coop_SandboxVars.lua"
 

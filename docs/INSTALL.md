@@ -2,6 +2,12 @@
 
 Knox Nightmare has three installation paths. All target Build 42.20.x and share the same sandbox source.
 
+## Recommended easy launcher
+
+Windows users can double-click `KnoxNightmare.bat`. Linux and Steam Deck users can run `./knox-nightmare`. Both launchers offer install, update, and system-check actions while preserving the lower-level commands below for advanced use.
+
+See [`EASY-INSTALL.md`](EASY-INSTALL.md).
+
 ## SOLO — normal Steam client
 
 Requirements: Linux Steam installation of Project Zomboid, Bash, tar, gzip, and sha256sum.
@@ -9,8 +15,7 @@ Requirements: Linux Steam installation of Project Zomboid, Bash, tar, gzip, and 
 ```bash
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 cd the-blackout
-./scripts/detect-local.sh
-./scripts/install-local.sh solo
+./knox-nightmare install solo
 ```
 
 The installer discovers the Steam library that actually contains App `108600`, derives its Workshop path, backs up existing local saves, installs only the named Knox Nightmare sandbox preset, and reports missing Workshop subscriptions. Subscribe to missing items through the normal Steam client.
@@ -20,7 +25,7 @@ Then launch Project Zomboid → **Mods** → enable the generated SOLO Mod IDs �
 ## CO-OP — normal Host workflow
 
 ```bash
-./scripts/install-local.sh coop
+./knox-nightmare install coop
 ```
 
 This installs the CO-OP menu preset and isolated `KnoxNightmare-Coop` host files under the detected Project Zomboid data directory. Existing saves and unrelated host profiles are preserved.

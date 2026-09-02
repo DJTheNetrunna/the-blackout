@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-02 — Easy installer and updater
+
+- Added one interactive Linux/Steam Deck launcher: `./knox-nightmare`.
+- Added a double-click Windows launcher: `KnoxNightmare.bat`.
+- Added safe Git-based updates with pre-update save backup and fast-forward-only pulls.
+- Added system checks and a browser-friendly missing-Workshop-mod helper.
+- Kept all advanced profile, server, and development scripts available.
+
 ## 2026-08-30 — Native Windows local support
 
 - Added native PowerShell SOLO and hosted CO-OP installers for Windows 10/11.
