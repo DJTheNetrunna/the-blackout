@@ -77,7 +77,8 @@ while IFS= read -r wid; do
   [[ -n "$wid" ]] && mkdir -p "$PZ_WORKSHOP_DIR/$wid"
 done < "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt"
 missing_test_id="$(head -n 1 "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt")"
-rm -rf "$PZ_WORKSHOP_DIR/$missing_test_id"
+[[ "$missing_test_id" =~ ^[0-9]+$ ]]
+rm -rf "${PZ_WORKSHOP_DIR:?}/$missing_test_id"
 
 # Local install must back up but preserve the existing save.
 "$REPO_ROOT/knox-nightmare" install solo --no-open >/dev/null

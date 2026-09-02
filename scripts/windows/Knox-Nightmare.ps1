@@ -71,7 +71,10 @@ function Invoke-KnoxInstallEasy {
     $result = Install-KnoxLocal -Target $Profile -SkipSaveBackup:$SkipBackup
     Write-Host "[knox-nightmare] Installed $($Profile.ToUpper()) preset: $($result.Preset)"
     if ($result.Backup) { Write-Host "[knox-nightmare] Existing saves backed up: $($result.Backup)" }
-    Open-KnoxWorkshopHelper -Profile $Profile -Urls @($result.MissingWorkshopUrls) -SkipOpen:$NoOpen
+    $missingUrls = @($result.MissingWorkshopUrls)
+    if ($missingUrls.Count -gt 0) {
+        Open-KnoxWorkshopHelper -Profile $Profile -Urls $missingUrls -SkipOpen:$NoOpen
+    }
     Write-Host '[knox-nightmare] READY: launch Project Zomboid and create a NEW world.'
 }
 
