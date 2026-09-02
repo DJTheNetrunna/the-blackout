@@ -9,8 +9,8 @@ load_env
 
 target="${1:-solo}"
 case "$target" in
-  solo|coop) ;;
-  *) die "Usage: $0 <solo|coop>" ;;
+  blind|solo|coop) ;;
+  *) die "Usage: $0 <blind|solo|coop>" ;;
 esac
 
 detect_local_paths || die "Project Zomboid Steam library not detected. Run scripts/detect-local.sh or set PZ_STEAMAPPS_DIR."

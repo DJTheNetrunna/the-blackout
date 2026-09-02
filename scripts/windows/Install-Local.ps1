@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position=0)]
-    [ValidateSet('solo','coop')]
+    [ValidateSet('blind','solo','coop')]
     [string]$Target = 'solo',
     [switch]$SkipSaveBackup
 )

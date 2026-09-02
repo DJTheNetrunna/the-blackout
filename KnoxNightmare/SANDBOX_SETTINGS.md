@@ -7,6 +7,7 @@ Build 42 format: `Version/VERSION = 6`.
 `config/sandbox/base.cfg` is the shared human-readable preset source. Target overlays are:
 
 - `config/profiles/solo.cfg`
+- `config/profiles/blind.cfg`
 - `config/profiles/coop.cfg`
 - `config/profiles/server.cfg`
 
@@ -19,13 +20,14 @@ Build 42 format: `Version/VERSION = 6`.
 | `NightDarkness` | 1 | Pitch-black nights |
 | `NightLength` | 2 | Long nights |
 | `ZombieLore.Speed` | 4 | B42 random-speed band |
-| `ZombieLore.SprinterPercentage` | SOLO 12 / CO-OP 8 / SERVER 6 | Rare but meaningful sprinters |
+| `ZombieLore.SprinterPercentage` | BLIND/SOLO 5 / CO-OP 4 / SERVER 3 | Rare enough to stay surprising |
 | `ZombieLore.ActiveOnly` | 2 | Night-focused activity |
-| `ZombieConfig.FollowSoundDistance` | 200 | Noise is strategically expensive |
+| `ZombieConfig.FollowSoundDistance` | 225 | Noise is strategically expensive |
 | `RedistributeHours` | 6 | Frequent migration |
 | `PopulationPeakDay` | 21 | Early escalation |
 | `MultiHitZombies` | false | No arcade multi-hit |
 | `Map.AllowMiniMap` | false | Navigation uncertainty |
+| `Map.AllowWorldMap` | BLIND false | First-playthrough information loss |
 
 ## Scarcity
 

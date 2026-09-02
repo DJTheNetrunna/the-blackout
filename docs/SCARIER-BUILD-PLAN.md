@@ -1,4 +1,6 @@
-# Knox Nightmare — Fear Pass
+# Knox Nightmare — Historical Fear Pass
+
+> Superseded by the 2026-09-02 Stable-first BLIND pass. Current exact settings and threats are in [`SPOILERS-HORROR-EVENTS.md`](SPOILERS-HORROR-EVENTS.md).
 
 ## Goal
 
@@ -10,11 +12,11 @@ The Fear Pass is built around five independent pressure layers:
 2. **Shelter:** Zombies Crash Through Windows removes the certainty that a closed window ends a chase.
 3. **Sound:** Reactive Sound Events creates unexplained scenes; future Knox Acoustics testing can make rooms, walls and distance matter acoustically.
 4. **Special infected:** Screamer creates local chain reactions. Occult Zombies and Nemesis remain isolated candidates for stranger threats.
-5. **Time/event pressure:** long dark nights + 15% random sprinters + HHNR + storms mean the world periodically changes the rules around the player.
+5. **Time/event pressure:** long dark nights + rare random sprinters + HHNR + storms mean the world periodically changes the rules around the player.
 
 ## Default SOLO changes
 
-- Sprinter percentage: 12% → **15%**.
+- Historical sprinter percentage: 12% → 15%. Current BLIND/SOLO tuning is **5%** because surprise proved more valuable than frequency at the design level.
 - Add **Bleak World - Horror** (`3403923830`, `BleakWorldHorror`).
 - Add **Starlit Library** (`3378285185`, `StarlitLibrary`).
 - Add **Zombies Crash Through Windows** (`3423871533`, `ZCTWS`).
@@ -40,7 +42,7 @@ Workshop `2874678809`, Mod ID `Lingering Voices`. The concept is nearly perfect 
 
 ### They Fear the Light
 
-Workshop `3592043816`, Mod ID `TheyFearTheLight`. Its day/night behavior and light-pressure design align directly with Knox Nightmare, but it overlaps zombie speed behavior and remains on hold until the current B42.20 compatibility state is proven with this stack.
+Workshop `3592043816`, Mod ID `TheyFearTheLight`. Its day/night behavior and light-pressure design align directly with Knox Nightmare. Official DEZ compatibility exists, so it is now an isolated candidate; current audio/night-state reports still block default promotion.
 
 ## Conflict policy
 

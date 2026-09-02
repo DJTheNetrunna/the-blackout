@@ -10,7 +10,7 @@ Extract the repository, then double-click:
 KnoxNightmare.bat
 ```
 
-Choose SOLO, hosted CO-OP, Update, or System Check from the menu. The batch launcher uses the native PowerShell implementation without requiring users to type an execution-policy command.
+Choose BLIND, SOLO, hosted CO-OP, Update, or System Check from the menu. BLIND is recommended for a first playthrough. The batch launcher uses the native PowerShell implementation without requiring users to type an execution-policy command.
 
 ## Requirements
 
@@ -23,7 +23,7 @@ Project Zomboid's Windows user data is normally stored under `%USERPROFILE%\Zomb
 
 The installer detects the Steam installation from the Windows registry, reads Steam's `libraryfolders.vdf`, and then selects the library that actually contains Project Zomboid. This supports secondary Steam libraries such as `D:\SteamLibrary` instead of assuming the game is on C:.
 
-## SOLO install
+## BLIND / SOLO install
 
 Open PowerShell in the repository directory:
 
@@ -31,7 +31,7 @@ Open PowerShell in the repository directory:
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 Set-Location .\the-blackout
 
-.\KnoxNightmare.bat install solo
+.\KnoxNightmare.bat install blind
 ```
 
 The installer will:
@@ -40,15 +40,15 @@ The installer will:
 2. locate the matching Workshop content directory;
 3. detect the Project Zomboid user-data directory;
 4. create a ZIP backup of existing `Saves\` plus a SHA-256 sidecar;
-5. generate the current Knox Nightmare SOLO preset from the shared Build 42 source;
-6. install only `Knox Nightmare - SOLO.cfg` under `Zomboid\Sandbox Presets\`;
-7. write Workshop IDs, Mod IDs, and Workshop URLs under `Zomboid\KnoxNightmare\solo\`;
+5. generate the current Knox Nightmare BLIND preset from the shared Build 42 source;
+6. install only `Knox Nightmare - BLIND.cfg` under `Zomboid\Sandbox Presets\`;
+7. write Workshop IDs, Mod IDs, and Workshop URLs under `Zomboid\KnoxNightmare\blind\`;
 8. report any Workshop items Steam has not downloaded yet;
 9. leave every existing save unchanged.
 
 After Steam downloads the missing Workshop subscriptions, launch Project Zomboid and use:
 
-**Solo → Custom Sandbox → Knox Nightmare - SOLO → create a NEW world.**
+**Solo → Custom Sandbox → Knox Nightmare - BLIND → create a NEW world.**
 
 Do not test the pack by continuing an existing save.
 
@@ -73,6 +73,7 @@ Launch Project Zomboid and use **Host → Manage Settings** to select or verify 
 
 ```powershell
 .\scripts\windows\Configure-Knox.ps1 solo
+.\scripts\windows\Configure-Knox.ps1 blind
 .\scripts\windows\Configure-Knox.ps1 coop
 .\scripts\windows\Configure-Knox.ps1 server
 ```
@@ -94,7 +95,7 @@ Do not disable PowerShell security globally just to run Knox Nightmare.
 Git-based installations can update safely from the menu or with:
 
 ```powershell
-.\KnoxNightmare.bat update solo
+.\KnoxNightmare.bat update blind
 ```
 
 The updater backs up saves before fetching, accepts only the official repository on `main`, refuses a dirty worktree, fast-forwards without rewriting history, and reinstalls the selected preset. ZIP installations remain fully supported for installation but require a fresh ZIP for code updates.
@@ -121,7 +122,7 @@ $env:KNOX_PZ_STEAMAPPS = 'D:\SteamLibrary\steamapps'
 
 ## Current Windows scope
 
-- SOLO local install: supported by native PowerShell tooling.
+- BLIND and SOLO local install: supported by native PowerShell tooling.
 - Steam-hosted CO-OP install: supported by native PowerShell tooling.
 - Profile generation: supported.
 - Dedicated Windows server deployment: not automated yet; the dedicated-server automation remains Linux-first.

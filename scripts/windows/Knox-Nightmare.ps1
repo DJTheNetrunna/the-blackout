@@ -5,7 +5,7 @@ param(
     [string]$Action = 'menu',
 
     [Parameter(Position=1)]
-    [ValidateSet('solo','coop')]
+    [ValidateSet('blind','solo','coop')]
     [string]$Target = 'solo',
 
     [switch]$NoOpen
@@ -21,9 +21,10 @@ function Show-KnoxHelp {
 Knox Nightmare easy installer
 
 Double-click KnoxNightmare.bat for the menu, or use:
+  .\KnoxNightmare.bat install blind
   .\KnoxNightmare.bat install solo
   .\KnoxNightmare.bat install coop
-  .\KnoxNightmare.bat update solo
+  .\KnoxNightmare.bat update blind
   .\KnoxNightmare.bat doctor
 
 Updates back up saves, safely fast-forward the Git repository, and reinstall
@@ -33,7 +34,7 @@ the selected preset. Existing Project Zomboid worlds are never modified.
 
 function Open-KnoxWorkshopHelper {
     param(
-        [Parameter(Mandatory)][ValidateSet('solo','coop')][string]$Profile,
+        [Parameter(Mandatory)][ValidateSet('blind','solo','coop')][string]$Profile,
         [Parameter(Mandatory)][string[]]$Urls,
         [switch]$SkipOpen
     )
@@ -67,7 +68,7 @@ function Open-KnoxWorkshopHelper {
 }
 
 function Invoke-KnoxInstallEasy {
-    param([Parameter(Mandatory)][ValidateSet('solo','coop')][string]$Profile, [switch]$SkipBackup)
+    param([Parameter(Mandatory)][ValidateSet('blind','solo','coop')][string]$Profile, [switch]$SkipBackup)
     $result = Install-KnoxLocal -Target $Profile -SkipSaveBackup:$SkipBackup
     Write-Host "[knox-nightmare] Installed $($Profile.ToUpper()) preset: $($result.Preset)"
     if ($result.Backup) { Write-Host "[knox-nightmare] Existing saves backed up: $($result.Backup)" }
@@ -108,7 +109,7 @@ function Update-KnoxRepository {
 }
 
 function Update-KnoxEasy {
-    param([Parameter(Mandatory)][ValidateSet('solo','coop')][string]$Profile)
+    param([Parameter(Mandatory)][ValidateSet('blind','solo','coop')][string]$Profile)
     $paths = Get-KnoxLocalPaths
     $backup = Backup-KnoxLocalSaves -DataDirectory $paths.DataDirectory
     if ($backup) { Write-Host "[knox-nightmare] Existing saves backed up: $backup" }
@@ -138,20 +139,24 @@ function Show-KnoxMenu {
     while ($true) {
         Write-Host ''
         Write-Host 'KNOX NIGHTMARE'
-        Write-Host '  1) Install SOLO (recommended)'
-        Write-Host '  2) Install hosted CO-OP'
-        Write-Host '  3) Update SOLO'
-        Write-Host '  4) Update hosted CO-OP'
-        Write-Host '  5) System check'
-        Write-Host '  6) Exit'
-        switch (Read-Host 'Choose [1-6]') {
-            '1' { Invoke-KnoxInstallEasy -Profile solo }
-            '2' { Invoke-KnoxInstallEasy -Profile coop }
-            '3' { Update-KnoxEasy -Profile solo }
-            '4' { Update-KnoxEasy -Profile coop }
-            '5' { Test-KnoxSystem }
-            '6' { return }
-            default { Write-Warning 'Choose a number from 1 to 6.' }
+        Write-Host '  1) Install BLIND (recommended maximum fear)'
+        Write-Host '  2) Install SOLO'
+        Write-Host '  3) Install hosted CO-OP'
+        Write-Host '  4) Update BLIND'
+        Write-Host '  5) Update SOLO'
+        Write-Host '  6) Update hosted CO-OP'
+        Write-Host '  7) System check'
+        Write-Host '  8) Exit'
+        switch (Read-Host 'Choose [1-8]') {
+            '1' { Invoke-KnoxInstallEasy -Profile blind }
+            '2' { Invoke-KnoxInstallEasy -Profile solo }
+            '3' { Invoke-KnoxInstallEasy -Profile coop }
+            '4' { Update-KnoxEasy -Profile blind }
+            '5' { Update-KnoxEasy -Profile solo }
+            '6' { Update-KnoxEasy -Profile coop }
+            '7' { Test-KnoxSystem }
+            '8' { return }
+            default { Write-Warning 'Choose a number from 1 to 8.' }
         }
     }
 }

@@ -1,14 +1,14 @@
 # Knox Nightmare
 
-This directory contains the game-facing layer for all three Build 42.20.x variants:
+This directory contains the game-facing layer for the Build 42.20.x variants:
 
 ```text
-singleplayer/       SOLO — maximum local horror
+singleplayer/       BLIND — recommended first run; SOLO — documented local horror
 multiplayer/        CO-OP — normal hosted multiplayer
 dedicated-server/   SERVER — dedicated Linux operation
 ```
 
-All three share:
+All targets share:
 
 - long pitch-black nights;
 - B42 random zombie speed + a controlled sprinter percentage;
@@ -22,6 +22,7 @@ Differences are overlays, not separate unrelated configurations. Use:
 
 ```bash
 ./scripts/configure-knox.sh solo
+./scripts/configure-knox.sh blind
 ./scripts/configure-knox.sh coop
 ./scripts/configure-knox.sh server
 ```

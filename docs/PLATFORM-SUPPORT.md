@@ -16,6 +16,7 @@ Supported means the repository provides a reproducible installation/configuratio
 The following are OS-independent source assets and are used by both Linux and Windows generators:
 
 - `config/sandbox/base.cfg`
+- `config/profiles/blind.cfg`
 - `config/profiles/solo.cfg`
 - `config/profiles/coop.cfg`
 - `config/profiles/server.cfg`
@@ -30,6 +31,7 @@ This keeps Windows and Linux on the same horror ruleset and mod selection rather
 ```bash
 ./scripts/detect-local.sh
 ./scripts/install-local.sh solo
+./scripts/install-local.sh blind
 ./scripts/install-local.sh coop
 ```
 
@@ -38,6 +40,7 @@ This keeps Windows and Linux on the same horror ruleset and mod selection rather
 ```powershell
 .\scripts\windows\Detect-Local.ps1
 .\scripts\windows\Install-Local.ps1 solo
+.\scripts\windows\Install-Local.ps1 blind
 .\scripts\windows\Install-Local.ps1 coop
 ```
 

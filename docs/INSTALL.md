@@ -1,6 +1,6 @@
 # Installation
 
-Knox Nightmare has three installation paths. All target Build 42.20.x and share the same sandbox source.
+Knox Nightmare has local, hosted, and dedicated installation paths. All target Build 42.20.x and share the same sandbox source. BLIND is the recommended first local profile.
 
 ## Recommended easy launcher
 
@@ -8,19 +8,19 @@ Windows users can double-click `KnoxNightmare.bat`. Linux and Steam Deck users c
 
 See [`EASY-INSTALL.md`](EASY-INSTALL.md).
 
-## SOLO — normal Steam client
+## BLIND / SOLO — normal Steam client
 
 Requirements: Linux Steam installation of Project Zomboid, Bash, tar, gzip, and sha256sum.
 
 ```bash
 git clone https://github.com/DJTheNetrunna/the-blackout.git
 cd the-blackout
-./knox-nightmare install solo
+./knox-nightmare install blind
 ```
 
-The installer discovers the Steam library that actually contains App `108600`, derives its Workshop path, backs up existing local saves, installs only the named Knox Nightmare sandbox preset, and reports missing Workshop subscriptions. Subscribe to missing items through the normal Steam client.
+The installer discovers the Steam library that actually contains App `108600`, derives its Workshop path, backs up existing local saves, installs only the named Knox Nightmare sandbox preset, and reports missing Workshop subscriptions. Subscribe to missing items through the normal Steam client. Use `solo` instead of `blind` if you want the world map and do not mind ordinary technical documentation.
 
-Then launch Project Zomboid → **Mods** → enable the generated SOLO Mod IDs → **Solo** → **Custom Sandbox** → load **Knox Nightmare - SOLO** → create a new world.
+Then launch Project Zomboid → **Mods** → enable the generated Mod IDs → **Solo** → **Custom Sandbox** → load **Knox Nightmare - BLIND** → create a new world.
 
 ## CO-OP — normal Host workflow
 

@@ -41,7 +41,7 @@ if ! awk -F '\t' '
   fail=1
 fi
 
-for profile in solo coop server solo-lab coop-lab server-lab vanilla; do
+for profile in blind solo coop server blind-lab solo-lab coop-lab server-lab vanilla; do
   rows="$(selected_manifest_rows "$profile" || true)"
   if printf '%s\n' "$rows" | awk -F '\t' '$6=="rejected" && $7=="rejected" && $8=="rejected" {bad=1} END {exit bad?0:1}'; then
     warn "Profile '$profile' emitted a globally rejected mod"
@@ -49,7 +49,7 @@ for profile in solo coop server solo-lab coop-lab server-lab vanilla; do
   fi
 done
 
-for target in solo coop server; do
+for target in blind solo coop server; do
   "$SCRIPT_DIR/configure-knox.sh" "$target" >/dev/null
   cfg="$REPO_ROOT/.generated/$target/Knox Nightmare - ${target^^}.cfg"
   lua="$REPO_ROOT/.generated/$target/KnoxNightmare_SandboxVars.lua"

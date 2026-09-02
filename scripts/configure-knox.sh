@@ -7,8 +7,8 @@ load_env
 
 target="${1:-server}"
 case "$target" in
-  solo|coop|server) ;;
-  *) die "Usage: $0 <solo|coop|server>" ;;
+  blind|solo|coop|server) ;;
+  *) die "Usage: $0 <blind|solo|coop|server>" ;;
 esac
 
 outdir="$REPO_ROOT/.generated/$target"
@@ -49,7 +49,7 @@ if [[ -n "$rows" ]]; then
   awk '{print "https://steamcommunity.com/sharedfiles/filedetails/?id=" $1}' "$outdir/WORKSHOP_IDS.txt" > "$outdir/WORKSHOP_URLS.txt"
 fi
 
-if [[ "$target" != "solo" ]]; then
+if [[ "$target" != "solo" && "$target" != "blind" ]]; then
   ini="$outdir/KnoxNightmare${target:+-${target^}}.ini"
   cp "$(server_template)" "$ini"
   workshop="$(paste -sd ';' "$outdir/WORKSHOP_IDS.txt")"

@@ -16,8 +16,8 @@ Knox Nightmare easy installer
 
 Usage:
   ./knox-nightmare                         Interactive menu
-  ./knox-nightmare install [solo|coop]    Install or repair a local preset
-  ./knox-nightmare update [solo|coop]     Back up saves, update this repo, reinstall
+  ./knox-nightmare install [blind|solo|coop]  Install or repair a local preset
+  ./knox-nightmare update [blind|solo|coop]   Back up saves, update this repo, reinstall
   ./knox-nightmare doctor                 Check Project Zomboid and Steam paths
   ./knox-nightmare help                   Show this help
 
@@ -25,15 +25,16 @@ Options:
   --no-open    Do not offer to open the missing-mod Workshop helper
 
 Examples:
+  ./knox-nightmare install blind
   ./knox-nightmare install solo
-  ./knox-nightmare update solo
+  ./knox-nightmare update blind
 EOF
 }
 
 validate_target() {
   case "$1" in
-    solo|coop) ;;
-    *) die "Profile must be 'solo' or 'coop'." ;;
+    blind|solo|coop) ;;
+    *) die "Profile must be 'blind', 'solo', or 'coop'." ;;
   esac
 }
 
@@ -146,22 +147,26 @@ menu() {
   [[ -t 0 ]] || { usage; return 1; }
   while true; do
     printf '\nKNOX NIGHTMARE\n'
-    printf '  1) Install SOLO (recommended)\n'
-    printf '  2) Install hosted CO-OP\n'
-    printf '  3) Update SOLO\n'
-    printf '  4) Update hosted CO-OP\n'
-    printf '  5) System check\n'
-    printf '  6) Exit\n'
-    printf 'Choose [1-6]: '
+    printf '  1) Install BLIND (recommended maximum fear)\n'
+    printf '  2) Install SOLO\n'
+    printf '  3) Install hosted CO-OP\n'
+    printf '  4) Update BLIND\n'
+    printf '  5) Update SOLO\n'
+    printf '  6) Update hosted CO-OP\n'
+    printf '  7) System check\n'
+    printf '  8) Exit\n'
+    printf 'Choose [1-8]: '
     read -r choice
     case "$choice" in
-      1) install_local solo open ;;
-      2) install_local coop open ;;
-      3) update_local solo open ;;
-      4) update_local coop open ;;
-      5) doctor || true ;;
-      6) return 0 ;;
-      *) warn "Choose a number from 1 to 6." ;;
+      1) install_local blind open ;;
+      2) install_local solo open ;;
+      3) install_local coop open ;;
+      4) update_local blind open ;;
+      5) update_local solo open ;;
+      6) update_local coop open ;;
+      7) doctor || true ;;
+      8) return 0 ;;
+      *) warn "Choose a number from 1 to 8." ;;
     esac
   done
 }
@@ -172,7 +177,7 @@ target="solo"
 open_mode="open"
 for arg in "$@"; do
   case "$arg" in
-    solo|coop) target="$arg" ;;
+    blind|solo|coop) target="$arg" ;;
     --no-open) open_mode="no-open" ;;
     *) die "Unknown argument: $arg. Run './knox-nightmare help'." ;;
   esac

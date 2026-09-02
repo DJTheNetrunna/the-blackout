@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position=0)]
-    [ValidateSet('solo','coop','server')]
+    [ValidateSet('blind','solo','coop','server')]
     [string]$Target = 'solo'
 )
 

@@ -1,23 +1,12 @@
 # Architecture
 
-```text
-                  config/sandbox/base.cfg
-                           │
-             ┌─────────────┼─────────────┐
-             │             │             │
-       solo overlay    coop overlay   server overlay
-             │             │             │
-             └──── scripts/configure-knox.sh ────┐
-                           │                       │
-                     Build 42 .cfg           SandboxVars.lua
-                           │                       │
-                 normal game menu          hosted/dedicated
-
-mods/manifest.tsv
-      │ target-specific status + load order
-      ├──────── SOLO Workshop/Mod list
-      ├──────── CO-OP Workshop/Mod list
-      └──────── SERVER Workshop/Mod list
+```mermaid
+flowchart TD
+    B["Shared sandbox base"] --> O["Target overlay"]
+    M["Target-aware mod manifest"] --> G["Cross-platform generator"]
+    O --> G
+    G --> P["Menu preset + mod references"]
+    G --> S["Hosted / dedicated config"]
 ```
 
 ## Local path layer
@@ -28,7 +17,7 @@ mods/manifest.tsv
 - Workshop content directory for App `108600`;
 - Project Zomboid user-data directory.
 
-`scripts/install-local.sh` then installs named SOLO/CO-OP artifacts without touching existing worlds.
+`scripts/install-local.sh` then installs named BLIND/SOLO/CO-OP artifacts without touching existing worlds. BLIND maps to the approved SOLO manifest column but applies its own no-world-map overlay.
 
 ## Dedicated layer
 
@@ -44,4 +33,4 @@ SteamCMD installs/updates dedicated App `380870`. `generate-config.sh server` re
 
 ## Validation pipeline
 
-GitHub Actions installs ShellCheck + Lua, runs `validate-mods.sh`, then `scripts/test.sh`. The mock test covers profile rendering, local Steam detection, save backup/preservation, SOLO preset installation, CO-OP named configuration, and dedicated install/update/launch/backup/restore without pretending that mocked CI is a real gameplay playtest.
+GitHub Actions installs ShellCheck + Lua, runs `validate-mods.sh`, then `scripts/test.sh`. The mock test covers all profile renders, local Steam detection, save backup/preservation, BLIND preset installation, CO-OP named configuration, and dedicated install/update/launch/backup/restore without pretending that mocked CI is a real gameplay playtest.

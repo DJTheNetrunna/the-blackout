@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-02 — Stable-first BLIND extreme-horror pass
+
+- Added BLIND as the recommended save-safe local profile on Linux, Steam Deck, and Windows.
+- Removed the world map from BLIND while retaining the approved SOLO Workshop set.
+- Reduced sprinters to rare target-specific levels and lowered SOLO crowd pressure so fear depends on uncertainty rather than constant speed/density.
+- Strengthened shared sound attraction and documented the CALM → UNEASE → WARNING → THREAT → CRISIS → RECOVERY contract.
+- Added spoiler separation, seven required live horror tests, and a provisional horror scorecard.
+- Tracked corpse reanimation and light-reactive behavior as isolated candidates; rejected a conflicting corpse-scent overhaul.
+- Preserved the complete extreme-horror directive as a project artifact.
+
 ## 2026-09-02 — Easy installer and updater
 
 - Added one interactive Linux/Steam Deck launcher: `./knox-nightmare`.
@@ -19,7 +29,7 @@
 - Added `windows-latest` CI coverage for PowerShell syntax, Fear Pass generation, save preservation, SOLO install, Workshop detection, and hosted CO-OP config.
 - Added platform-support and Windows installation documentation.
 
-## 2026-08-30 — Fear Pass
+## 2026-08-30 — Fear Pass (superseded by Stable-first BLIND)
 
 - Increased SOLO rare sprinters from 12% to 15%.
 - Added maintained Bleak World - Horror as the default SOLO visual/fog layer.

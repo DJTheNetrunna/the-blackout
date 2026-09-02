@@ -9,7 +9,7 @@ The root launchers are the normal way to install Knox Nightmare. The lower-level
 1. On GitHub, choose **Code → Download ZIP**.
 2. Extract the ZIP completely. Do not run the launcher from inside the compressed-folder preview.
 3. Double-click `KnoxNightmare.bat`.
-4. Choose `1` for SOLO or `2` for hosted CO-OP.
+4. Choose `1` for BLIND (recommended), `2` for SOLO, or `3` for hosted CO-OP.
 5. Approve the missing-mod helper when prompted, subscribe to every listed Workshop item, and wait for Steam downloads to finish.
 6. Launch Project Zomboid and create a new world with the installed Knox Nightmare preset.
 
@@ -45,12 +45,14 @@ chmod +x knox-nightmare
 ## Menu
 
 ```text
-1) Install SOLO (recommended)
-2) Install hosted CO-OP
-3) Update SOLO
-4) Update hosted CO-OP
-5) System check
-6) Exit
+1) Install BLIND (recommended maximum fear)
+2) Install SOLO
+3) Install hosted CO-OP
+4) Update BLIND
+5) Update SOLO
+6) Update hosted CO-OP
+7) System check
+8) Exit
 ```
 
 The install path automatically:
@@ -68,11 +70,11 @@ The install path automatically:
 For Git installations, choose **Update** in the menu or run:
 
 ```bash
-./knox-nightmare update solo
+./knox-nightmare update blind
 ```
 
 ```powershell
-.\KnoxNightmare.bat update solo
+.\KnoxNightmare.bat update blind
 ```
 
 The updater performs these operations in order:
@@ -93,6 +95,7 @@ Linux / Steam Deck:
 
 ```bash
 ./knox-nightmare install solo
+./knox-nightmare install blind
 ./knox-nightmare install coop
 ./knox-nightmare update solo
 ./knox-nightmare doctor
@@ -102,6 +105,7 @@ Windows:
 
 ```powershell
 .\KnoxNightmare.bat install solo
+.\KnoxNightmare.bat install blind
 .\KnoxNightmare.bat install coop
 .\KnoxNightmare.bat update solo
 .\KnoxNightmare.bat doctor

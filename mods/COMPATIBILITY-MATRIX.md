@@ -1,6 +1,6 @@
 # Knox Nightmare Build 42 Compatibility Matrix
 
-Research snapshot: **2026-08-30 Fear Pass**. `mods/manifest.tsv` is the machine-readable source of truth.
+Research snapshot: **2026-09-02 Stable-first BLIND pass**. `mods/manifest.tsv` is the machine-readable source of truth.
 
 Legend: **Yes** = approved default, **Candidate** = isolated test-world candidate, **Hold** = do not currently enable, **No** = rejected for that target.
 
@@ -21,13 +21,15 @@ Legend: **Yes** = approved default, **Candidate** = isolated test-world candidat
 | Authentic Z | Candidate | Candidate | Candidate | B42 | B42.20/server reports mixed; no asset redistribution. |
 | The Fog [B42] Alpha | Candidate | No | No | B42 | Early-alpha world override; isolated SOLO research only. |
 | Lingering Whispers | Hold | Hold | Hold | 41/42 | Tagged B42, but current late-August reports show errors after a game update. |
-| They Fear the Light | Hold | Hold | Hold | B42 | Excellent night/light design fit; compatibility state still unresolved for this build. |
+| They Fear the Light | Candidate | Candidate | Candidate | B42 | Official DEZ compatibility exists; current audio/night-state reports still require an isolated B42.20 live test. |
 | Original Horde Night | Candidate | Candidate | No | B42 | Superseded by HHNR in defaults. |
 | Occult Zombies | Candidate | Candidate | Candidate | B42.20 | Recent users report current SP/MP operation; visual/spawn compatibility needs isolation testing. |
 | ZombieBuddy | Candidate | Candidate | Candidate | B42 | Java framework; manual installation/security approval and version matching add complexity. |
 | Knox Acoustics | Candidate | Candidate | Hold | 42.20 | Physically modeled acoustics; pre-release and CPU heavier. |
 | ApocalipseBR Regioes | Candidate | Candidate | Candidate | 42.14+ | Region/boss framework with sprinter screams; designed for MP and also claims SP support. |
 | ApocalipseBR Projeto Nemesis | Candidate | Candidate | Candidate | B42 | Stalker/boss pressure system with positional audio; test before defaulting. |
+| Reanimating Zombies | Candidate | Hold | No | B42 | Excellent delayed-corpse false-security layer; current B42.20 and multiplayer behavior is not proven enough for defaults. |
+| Starving Zombies | No | No | No | B42 | Thematically strong corpse scent/wind system, but explicitly incompatible with the default DEZ behavior layer. |
 
 ## Default SOLO fear-stack principle
 
@@ -40,5 +42,7 @@ Knox Nightmare prefers **orthogonal horror systems**: one visual layer, one wind
 - Occult Zombies has current user reports of functioning on B42.20 and MP but remains non-default because it modifies zombie variants/spawns.
 - Knox Acoustics explicitly targets B42.20 and models rooms, walls, portals, distance and VOIP acoustics, but is pre-release and depends on ZombieBuddy.
 - Lingering Whispers is conceptually ideal but is held because current comments report errors after the late-August game update.
+- They Fear the Light is promoted to an isolated candidate because DEZ now has an official compatibility layer; it is not in a default profile.
+- Reanimating Zombies is tracked as a SOLO candidate for the future corpse-horror pass, never silently enabled.
 
 Workshop payloads remain on Steam and are never committed here.

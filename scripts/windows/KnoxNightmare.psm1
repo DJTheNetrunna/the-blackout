@@ -27,7 +27,7 @@ function Read-KnoxFlatConfig {
 }
 
 function Merge-KnoxConfig {
-    param([Parameter(Mandatory)][ValidateSet('solo','coop','server')][string]$Target)
+    param([Parameter(Mandatory)][ValidateSet('blind','solo','coop','server')][string]$Target)
     $base = Read-KnoxFlatConfig (Join-Path $script:RepoRoot 'config\sandbox\base.cfg')
     $overlay = Read-KnoxFlatConfig (Join-Path $script:RepoRoot "config\profiles\$Target.cfg")
     foreach ($key in $overlay.Keys) { $base[$key] = $overlay[$key] }
@@ -72,10 +72,11 @@ function Write-KnoxLua {
 }
 
 function Get-KnoxManifestRows {
-    param([Parameter(Mandatory)][ValidateSet('solo','coop','server')][string]$Target)
+    param([Parameter(Mandatory)][ValidateSet('blind','solo','coop','server')][string]$Target)
     $manifest = Join-Path $script:RepoRoot 'mods\manifest.tsv'
     $rows = Import-Csv -LiteralPath $manifest -Delimiter "`t"
-    return @($rows | Where-Object { $_.$Target -eq 'approved' } | Sort-Object { [int]$_.load_order })
+    $manifestTarget = if ($Target -eq 'blind') { 'solo' } else { $Target }
+    return @($rows | Where-Object { $_.$manifestTarget -eq 'approved' } | Sort-Object { [int]$_.load_order })
 }
 
 function Set-IniValue {
@@ -86,7 +87,7 @@ function Set-IniValue {
 
 function Invoke-KnoxConfigure {
     [CmdletBinding()]
-    param([Parameter(Mandatory)][ValidateSet('solo','coop','server')][string]$Target)
+    param([Parameter(Mandatory)][ValidateSet('blind','solo','coop','server')][string]$Target)
 
     $outDir = Join-Path $script:RepoRoot ".generated\$Target"
     New-Item -ItemType Directory -Force -Path $outDir | Out-Null
@@ -108,7 +109,7 @@ function Invoke-KnoxConfigure {
     Write-Utf8NoBom -Path (Join-Path $outDir 'WORKSHOP_URLS.txt') -Lines @($workshop | ForEach-Object { "https://steamcommunity.com/sharedfiles/filedetails/?id=$_" })
 
     $iniPath = $null
-    if ($Target -ne 'solo') {
+    if ($Target -notin @('blind','solo')) {
         $template = Join-Path $script:RepoRoot 'config\server\KnoxNightmare.ini'
         $iniLines = @(Get-Content -LiteralPath $template)
         $iniLines = Set-IniValue -Lines $iniLines -Key 'WorkshopItems' -Value ($workshop -join ';')
@@ -233,7 +234,7 @@ function Copy-KnoxFileSafely {
 function Install-KnoxLocal {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][ValidateSet('solo','coop')][string]$Target,
+        [Parameter(Mandatory)][ValidateSet('blind','solo','coop')][string]$Target,
         [switch]$SkipSaveBackup
     )
 

@@ -40,13 +40,18 @@ export PZ_WORKSHOP_DIR="$tmp/Steam/steamapps/workshop/content/108600"
 export PZ_DATA_DIR="$tmp/localdata"
 
 # Profile generation
-for target in solo coop server; do
+for target in blind solo coop server; do
   "$SCRIPT_DIR/configure-knox.sh" "$target" >/dev/null
   test -f "$REPO_ROOT/.generated/$target/Knox Nightmare - ${target^^}.cfg"
   test -f "$REPO_ROOT/.generated/$target/KnoxNightmare_SandboxVars.lua"
 done
 
-grep -Fxq 'ZombieLore.SprinterPercentage=15' "$REPO_ROOT/.generated/solo/Knox Nightmare - SOLO.cfg"
+grep -Fxq 'Map.AllowWorldMap=false' "$REPO_ROOT/.generated/blind/Knox Nightmare - BLIND.cfg"
+grep -Fxq 'ZombieLore.SprinterPercentage=5' "$REPO_ROOT/.generated/blind/Knox Nightmare - BLIND.cfg"
+grep -Fxq 'ZombieLore.SprinterPercentage=5' "$REPO_ROOT/.generated/solo/Knox Nightmare - SOLO.cfg"
+grep -Fxq 'ZombieLore.SprinterPercentage=4' "$REPO_ROOT/.generated/coop/Knox Nightmare - COOP.cfg"
+grep -Fxq 'ZombieLore.SprinterPercentage=3' "$REPO_ROOT/.generated/server/Knox Nightmare - SERVER.cfg"
+cmp "$REPO_ROOT/.generated/blind/MOD_IDS.txt" "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
 grep -Fxq 'ReactiveSE' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
 grep -Fxq 'BleakWorldHorror' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
 grep -Fxq 'StarlitLibrary' "$REPO_ROOT/.generated/solo/MOD_IDS.txt"
@@ -72,19 +77,19 @@ grep -Fq "$tmp/Steam/steamapps" "$tmp/detected.txt"
 "$REPO_ROOT/knox-nightmare" help | grep -Fq 'Interactive menu'
 "$REPO_ROOT/knox-nightmare" doctor | grep -Fq 'Project Zomboid: ✅ detected'
 
-# Pretend Steam already downloaded SOLO's selected Workshop items.
+# Pretend Steam already downloaded BLIND's selected Workshop items.
 while IFS= read -r wid; do
   [[ -n "$wid" ]] && mkdir -p "$PZ_WORKSHOP_DIR/$wid"
-done < "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt"
-missing_test_id="$(head -n 1 "$REPO_ROOT/.generated/solo/WORKSHOP_IDS.txt")"
+done < "$REPO_ROOT/.generated/blind/WORKSHOP_IDS.txt"
+missing_test_id="$(head -n 1 "$REPO_ROOT/.generated/blind/WORKSHOP_IDS.txt")"
 [[ "$missing_test_id" =~ ^[0-9]+$ ]]
 rm -rf "${PZ_WORKSHOP_DIR:?}/$missing_test_id"
 
 # Local install must back up but preserve the existing save.
-"$REPO_ROOT/knox-nightmare" install solo --no-open >/dev/null
+"$REPO_ROOT/knox-nightmare" install blind --no-open >/dev/null
 grep -Fxq 'existing-save' "$tmp/localdata/Saves/Sandbox/ExistingWorld/map.bin"
-test -f "$tmp/localdata/Sandbox Presets/Knox Nightmare - SOLO.cfg"
-grep -Fq "id=$missing_test_id" "$tmp/localdata/KnoxNightmare/solo/INSTALL-MISSING-MODS.html"
+test -f "$tmp/localdata/Sandbox Presets/Knox Nightmare - BLIND.cfg"
+grep -Fq "id=$missing_test_id" "$tmp/localdata/KnoxNightmare/blind/INSTALL-MISSING-MODS.html"
 find "$tmp/root/local-backups" -type f -name 'local-saves-*.tar.gz' | grep -q .
 
 # Hosted CO-OP install is isolated under its own names.
@@ -120,4 +125,4 @@ for profile in vanilla server server-lab; do
   fi
 done
 
-printf '[knox-nightmare] SOLO Fear Pass + CO-OP + SERVER mocked lifecycle tests passed\n'
+printf '[knox-nightmare] BLIND + SOLO + CO-OP + SERVER mocked lifecycle tests passed\n'

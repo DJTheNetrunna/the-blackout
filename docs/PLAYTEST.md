@@ -2,7 +2,21 @@
 
 CI can validate files and control flow, but it cannot claim a real Project Zomboid gameplay pass.
 
-## SOLO
+## Required extreme-horror scenarios
+
+These seven scenarios are mandatory before the Stable-first BLIND experience can be called gameplay-verified.
+
+| Scenario | Evidence to record | Status |
+|---|---|---|
+| Night walk outside a safehouse | sunset departure, navigation choices, return condition, fear/frustration notes | NOT_RUN |
+| Enter a dark building | hesitation point, light/noise choice, interior breach behavior | NOT_RUN |
+| Sleep through suspicious audio | cue timing, wake/panic behavior, whether the warning was legible | NOT_RUN |
+| Drive into heavy fog or storm | visibility, sound, exit-from-vehicle decision, recoverability | NOT_RUN |
+| Return to a previously cleared building | evidence of change without obvious scripted repetition | NOT_RUN |
+| Power failure during routine activity | light scarcity, route change, safehouse response | NOT_RUN |
+| Save, exit, reload, and continue | mod persistence, world integrity, no obvious errors | NOT_RUN |
+
+## BLIND / SOLO
 
 | Test | Status |
 |---|---|
@@ -23,6 +37,8 @@ CI can validate files and control flow, but it cannot claim a real Project Zombo
 | Horde Night | NOT_RUN |
 | Clean save/exit/reload | NOT_RUN |
 | Mod loading after restart | NOT_RUN |
+
+Record the current [horror scorecard](HORROR-SCORECARD.md) after the seven scenarios. BLIND must be tested before reading the spoiler document.
 
 ## CO-OP
 

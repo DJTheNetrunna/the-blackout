@@ -50,11 +50,11 @@ active_sandbox_lua() { printf '%s/Server/%s_SandboxVars.lua\n' "$PZ_CACHE_DIR" "
 
 target_from_profile() {
   case "$1" in
-    solo|solo-lab) printf 'solo\n' ;;
+    solo|solo-lab|blind|blind-lab) printf 'solo\n' ;;
     coop|coop-lab) printf 'coop\n' ;;
     server|server-lab|core|recommended|horror-lab) printf 'server\n' ;;
     vanilla) printf 'vanilla\n' ;;
-    *) die "Unknown profile: $1 (expected solo|coop|server or a *-lab/legacy alias)" ;;
+    *) die "Unknown profile: $1 (expected blind|solo|coop|server or a *-lab/legacy alias)" ;;
   esac
 }
 
